@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/home/jeremy/.bash_it'
+let g:netrw_dirhist_2='/home/jeremy/.rvm/gems/jruby-1.6.7.2/gems/guard-jruby-rspec-0.1.3/lib/guard/jruby-rspec'
+let g:netrw_dirhist_3='/home/jeremy/repos/phoreails/lib/tasks'
+let g:netrw_dirhist_4='/home/jeremy/repos/phoreails'

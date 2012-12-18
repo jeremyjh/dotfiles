@@ -1,0 +1,18 @@
+# ~/.tmuxinator/dashscala.yml
+# you can make as many tabs as you wish...
+
+project_name: dashscala 
+project_root: ~/test/akka
+socket_name: dashscala # Not needed.  Remove to use default socket
+#rvm: 1.9.2@rails_project
+#pre: sudo /etc/rc.d/mysqld start
+tabs:
+  - editor:
+      layout: 157a,177x64,0,0{110x64,0,0[110x41,0,0,110x22,0,42],66x64,111,0}
+      panes:
+        - vim
+        - 
+        - sbt
+  - database: mongo 
+  - logs: tail -f logfile 
+  #- server: ssh me@myhost

@@ -1,0 +1,24 @@
+# ~/.tmuxinator/phoreails.yml
+# you can make as many tabs as you wish...
+
+project_name: Tmuxinator
+project_root: ~/repos/dashrb
+socket_name: dashrb # Not needed.  Remove to use default socket
+rvm: 1.9.3-p194
+#pre: sudo /etc/rc.d/mysqld start
+tabs:
+  - editor:
+      layout: 157a,177x64,0,0{110x64,0,0[110x41,0,0,110x22,0,42],66x64,111,0}
+      panes:
+        - vim
+        - #empty, will just run plain bash
+        - pry 
+  - shell: git pull
+  - database:
+      layout: main-horizontal
+      panes:
+        - mongo dash 
+        - sudo mongosniff --source NET lo 
+  #- server: be rails s
+  #- logs: tail -f log/development.log
+  #- console: be rails c
