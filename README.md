@@ -1,4 +1,7 @@
-dotfiles
-========
+uses [homesick](https://github.com/technicalpickles/homesick)
 
-uhm...my dot files?
+gem install homesick
+
+homesick clone jeremyjh/dotfiles
+
+homesick symlink dotfiles
