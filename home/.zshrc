@@ -39,6 +39,9 @@ source $ZSH/oh-my-zsh.sh
 
 bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode
+[[ -z "$terminfo[khome]" ]] || bindkey -M viins "$terminfo[khome]" beginning-of-line
+[[ -z "$terminfo[kend]" ]] || bindkey -M viins "$terminfo[kend]" end-of-line
+[[ -z "$terminfo[kdch1]" ]] || bindkey -M viins "$terminfo[kdch1]" vi-delete-char
 
 export PATH=$PATH:/usr/local/sbt/bin
 export PATH=$PATH:/usr/local/play-2.0.4
