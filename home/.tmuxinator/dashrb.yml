@@ -4,7 +4,7 @@
 project_name: Tmuxinator
 project_root: ~/repos/dashrb
 socket_name: dashrb # Not needed.  Remove to use default socket
-rvm: 1.9.3-p194
+rvm: 1.9.3
 #pre: sudo /etc/rc.d/mysqld start
 tabs:
   - editor:

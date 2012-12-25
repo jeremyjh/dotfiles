@@ -4,4 +4,4 @@ gem install homesick
 
 homesick clone jeremyjh/dotfiles
 
-homesick symlink dotfiles
+homesick symlink jeremyjh/dotfiles
