@@ -27,7 +27,7 @@ else
   set background=dark
   colorscheme elflord
 endif
-set foldmethod=manual
+set foldmethod=syntax
 set nowrap
 set mouse=a
 syntax enable
