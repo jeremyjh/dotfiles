@@ -34,8 +34,6 @@ plugins=(git git-flow gem debian vi-mode rvm bundler)
 
 source $ZSH/oh-my-zsh.sh
 
-# Customize to your needs...
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
 bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode
@@ -61,7 +59,9 @@ bindkey -r "^s"
 stty -ixon
 
 #set JAVA_HOME using update alternative loc
-export JAVA_HOME=/usr/lib/jvm/java-7-oracle
+export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:bin/javac::")
 export EDITOR=/usr/bin/vim
 
 [[ -s $HOME/.tmuxinator/scripts/tmuxinator ]] && source $HOME/.tmuxinator/scripts/tmuxinator
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
