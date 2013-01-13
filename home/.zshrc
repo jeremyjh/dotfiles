@@ -43,10 +43,12 @@ bindkey -M viins 'jk' vi-cmd-mode
 
 export PATH=$PATH:/usr/local/sbt/bin
 export PATH=$PATH:/usr/local/play-2.0.4
+export PATH=$PATH:/home/jeremy/.cabal/bin
+export PATH=$PATH: opt/vagrant/bin
+export PATH=$PATH:/usr/lib/go/bin
+
 # below was needed to use my local ctags
 export PATH=/usr/local/bin:$PATH
-export PATH=/home/jeremy/.cabal/bin:$PATH
-export PATH=/opt/vagrant/bin:$PATH
 
 if [ -f ~/.zsh_nocorrect ]; then
 	while read -r COMMAND; do
