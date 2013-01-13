@@ -44,7 +44,7 @@ bindkey -M viins 'jk' vi-cmd-mode
 export PATH=$PATH:/usr/local/sbt/bin
 export PATH=$PATH:/usr/local/play-2.0.4
 export PATH=$PATH:/home/jeremy/.cabal/bin
-export PATH=$PATH: opt/vagrant/bin
+export PATH=$PATH:/opt/vagrant/bin
 export PATH=$PATH:/usr/lib/go/bin
 
 # below was needed to use my local ctags
