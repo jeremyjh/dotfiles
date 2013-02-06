@@ -40,3 +40,6 @@
 [submodule "home/.vim/bundle/vim-golang"]
 	path = home/.vim/bundle/vim-golang
 	url = https://github.com/jnwhiteh/vim-golang
+[submodule "home/.vim/bundle/vim-javascript"]
+	path = home/.vim/bundle/vim-javascript
+	url = https://github.com/pangloss/vim-javascript

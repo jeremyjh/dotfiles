@@ -7,6 +7,7 @@ ZSH=$HOME/.oh-my-zsh
 # time that oh-my-zsh is loaded.
 #ZSH_THEME="nebirhos"
 ZSH_THEME="superjarin"
+#ZSH_THEME="oh-my-solarized"
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
@@ -34,6 +35,8 @@ plugins=(git git-flow gem debian vi-mode rvm bundler)
 
 source $ZSH/oh-my-zsh.sh
 
+#solarized ls
+eval `dircolors ~/.dircolors`
 
 bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode
@@ -41,7 +44,6 @@ bindkey -M viins 'jk' vi-cmd-mode
 [[ -z "$terminfo[kend]" ]] || bindkey -M viins "$terminfo[kend]" end-of-line
 [[ -z "$terminfo[kdch1]" ]] || bindkey -M viins "$terminfo[kdch1]" vi-delete-char
 
-export PATH=$PATH:/usr/local/sbt/bin
 export PATH=$PATH:/usr/local/play-2.0.4
 export PATH=$PATH:/home/jeremy/.cabal/bin
 export PATH=$PATH:/opt/vagrant/bin
@@ -64,6 +66,19 @@ stty -ixon
 export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:bin/javac::")
 export EDITOR=/usr/bin/vim
 
+#fix solarized theme in tmux
+export TERM="xterm-256color"
+alias tmux="TERM=xterm-256color tmux"
+
 [[ -s $HOME/.tmuxinator/scripts/tmuxinator ]] && source $HOME/.tmuxinator/scripts/tmuxinator
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
+
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
+#riak expansions
+rget () {
+	curl http://127.0.0.1:8098/riak/$1
+}
+	

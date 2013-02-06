@@ -15,6 +15,7 @@ coverage/
 ###################
 *.o
 *.so
+.rbx/
 
 #Autoconf stuff
 ###################

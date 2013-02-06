@@ -19,14 +19,13 @@ let g:fuzzy_ignore = "*.log"
 let g:fuzzy_matching_limit = 70
 autocmd vimenter * if !argc() | NERDTree | endif
 imap jk <Esc>
+
+set background=light
+colorscheme solarized
 if has("gui_running")
   set lines=40 columns=150
-  set background=light
-  colorscheme solarized
-else
-  set background=dark
-  colorscheme elflord
 endif
+
 set foldmethod=syntax
 set nowrap
 set mouse=a
