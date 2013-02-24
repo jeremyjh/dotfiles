@@ -43,3 +43,6 @@
 [submodule "home/.vim/bundle/vim-javascript"]
 	path = home/.vim/bundle/vim-javascript
 	url = https://github.com/pangloss/vim-javascript
+[submodule "home/.vim/bundle/vim-elixir"]
+	path = home/.vim/bundle/vim-elixir
+	url = https://github.com/elixir-lang/vim-elixir.git

@@ -81,4 +81,6 @@ PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 rget () {
 	curl http://127.0.0.1:8098/riak/$1
 }
-	
+
+# erlang
+. /home/jeremy/erlang/r15b01/activate
