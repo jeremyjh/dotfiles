@@ -46,3 +46,9 @@
 [submodule "home/.vim/bundle/vim-elixir"]
 	path = home/.vim/bundle/vim-elixir
 	url = https://github.com/elixir-lang/vim-elixir.git
+[submodule "home/.vim/bundle/nerdcommenter"]
+	path = home/.vim/bundle/nerdcommenter
+	url = git@github.com:jeremyjh/nerdcommenter.git
+[submodule "home/.vim/bundle/slimux"]
+	path = home/.vim/bundle/slimux
+	url = https://github.com/epeli/slimux.git
