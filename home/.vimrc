@@ -20,21 +20,28 @@ let g:fuzzy_matching_limit = 70
 autocmd vimenter * if !argc() | NERDTree | endif
 imap jk <Esc>
 
-set background=light
-colorscheme solarized
 if has("gui_running")
+  set background=dark
+  colorscheme desert
+  set gfn=Source\ Code\ Pro\ 9
   set lines=40 columns=150
+else
+  colorscheme elflord
 endif
 
-set foldmethod=syntax
+set foldmethod=manual
 set nowrap
 set mouse=a
 syntax enable
 let g:slime_target="tmux"
 set number
 
-map <F5>  :w <Bar> call VimuxRunLastCommand()<CR>
-imap <F5> <Esc> :w <Bar> call VimuxRunLastCommand()<CR>
+set pastetoggle=<F2>
+"map <F5>  :w <Bar> call VimuxRunLastCommand()<CR>
+"imap <F5> <Esc> :w <Bar> call VimuxRunLastCommand()<CR>
+map <F5>  :w <Bar> :SlimuxShellLast<CR>
+imap <F5> <Esc> :w <Bar> :SlimuxShellLast<CR>
+
 map <F7> :NERDTreeToggle<CR>
 map <F8> :TagbarToggle<CR>
 " fix coffeescript tab/spacing
@@ -46,7 +53,9 @@ set laststatus=2   " Always show the statusline
 set encoding=utf-8 " Necessary to show Unicode glyphs
 let g:Powerline_colorscheme = 'solarized'
 
-nmap <C-m> ggVG<C-c><C-c> `.
+"nmap <C-m> ggVG<C-c><C-c> `.
+vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>
+nmap <C-m> mzggVG :SlimuxREPLSendSelection<CR> 'z
 
 " disable swap & backup files
 set noswapfile
@@ -124,3 +133,19 @@ let g:tagbar_type_go = {
     \ 'ctagsbin'  : 'gotags',
     \ 'ctagsargs' : '-sort -silent'
     \ }
+
+"hacking this in here - access Elixir REPL help from VIM!
+function! s:GetVisual() range
+    let reg_save = getreg('"')
+    let regtype_save = getregtype('"')
+    let cb_save = &clipboard
+    set clipboard&
+    silent normal! ""gvy
+    let selection = getreg('"')
+    call setreg('"', reg_save, regtype_save)
+    let &clipboard = cb_save
+    return selection
+endfunction
+command! -range=% -bar -nargs=* SlimuxREPLSendHelp call SlimuxSendCode("h(" . s:GetVisual() . ")\n")
+
+vmap <F1> <Esc>:SlimuxREPLSendHelp<CR>
