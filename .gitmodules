@@ -82,3 +82,9 @@
 [submodule "home/.vim/bundle/VimClojure"]
 	path = home/.vim/bundle/VimClojure
 	url = https://github.com/vim-scripts/VimClojure.git
+[submodule "home/.vim/bundle/nerdcommenter"]
+	path = home/.vim/bundle/nerdcommenter
+	url = git@github.com:jeremyjh/nerdcommenter.git
+[submodule "home/.vim/bundle/slimux"]
+	path = home/.vim/bundle/slimux
+	url = https://github.com/epeli/slimux.git

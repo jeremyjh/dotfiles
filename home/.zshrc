@@ -83,4 +83,4 @@ rget () {
 }
 
 # erlang
-. /home/jeremy/erlang/r15b01/activate
+. /home/jeremy/erlang/r16b/activate
