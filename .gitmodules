@@ -46,6 +46,42 @@
 [submodule "home/.vim/bundle/vim-elixir"]
 	path = home/.vim/bundle/vim-elixir
 	url = https://github.com/elixir-lang/vim-elixir.git
+[submodule "home/.vim/bundle/FuzzyFinder"]
+	path = home/.vim/bundle/FuzzyFinder
+	url = git://github.com/vim-scripts/FuzzyFinder.git
+[submodule "home/.vim/bundle/L9"]
+	path = home/.vim/bundle/L9
+	url = git://github.com/vim-scripts/L9.git
+[submodule "home/.vim/bundle/delimitMate"]
+	path = home/.vim/bundle/delimitMate
+	url = git://github.com/Raimondi/delimitMate.git
+[submodule "home/.vim/bundle/fuzzyfinder_textmate"]
+	path = home/.vim/bundle/fuzzyfinder_textmate
+	url = git://github.com/sethbc/fuzzyfinder_textmate.git
+[submodule "home/.vim/bundle/tagbar"]
+	path = home/.vim/bundle/tagbar
+	url = git://github.com/majutsushi/tagbar
+[submodule "home/.vim/bundle/tlib_vim"]
+	path = home/.vim/bundle/tlib_vim
+	url = git://github.com/tomtom/tlib_vim.git
+[submodule "home/.vim/bundle/vim-addon-mw-utils"]
+	path = home/.vim/bundle/vim-addon-mw-utils
+	url = https://github.com/MarcWeber/vim-addon-mw-utils.git
+[submodule "home/.vim/bundle/vim-bundler"]
+	path = home/.vim/bundle/vim-bundler
+	url = git://github.com/tpope/vim-bundler.git
+[submodule "home/.vim/bundle/vim-coffee-script"]
+	path = home/.vim/bundle/vim-coffee-script
+	url = https://github.com/kchmck/vim-coffee-script.git
+[submodule "home/.vim/bundle/vim-powerline"]
+	path = home/.vim/bundle/vim-powerline
+	url = https://github.com/Lokaltog/vim-powerline.git
+[submodule "home/.vim/bundle/vim-rails"]
+	path = home/.vim/bundle/vim-rails
+	url = git://github.com/tpope/vim-rails.git
+[submodule "home/.vim/bundle/VimClojure"]
+	path = home/.vim/bundle/VimClojure
+	url = https://github.com/vim-scripts/VimClojure.git
 [submodule "home/.vim/bundle/nerdcommenter"]
 	path = home/.vim/bundle/nerdcommenter
 	url = git@github.com:jeremyjh/nerdcommenter.git
