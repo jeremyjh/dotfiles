@@ -52,3 +52,6 @@
 [submodule "home/.vim/bundle/slimux"]
 	path = home/.vim/bundle/slimux
 	url = https://github.com/epeli/slimux.git
+[submodule "home/.vim/bundle/Ultisnips"]
+	path = home/.vim/bundle/Ultisnips
+	url = https://github.com/vim-scripts/UltiSnips.git
