@@ -48,28 +48,28 @@
 	url = https://github.com/elixir-lang/vim-elixir.git
 [submodule "home/.vim/bundle/FuzzyFinder"]
 	path = home/.vim/bundle/FuzzyFinder
-	url = git://github.com/vim-scripts/FuzzyFinder.git
+	url = https://github.com/vim-scripts/FuzzyFinder.git
 [submodule "home/.vim/bundle/L9"]
 	path = home/.vim/bundle/L9
-	url = git://github.com/vim-scripts/L9.git
+	url = https://github.com/vim-scripts/L9.git
 [submodule "home/.vim/bundle/delimitMate"]
 	path = home/.vim/bundle/delimitMate
-	url = git://github.com/Raimondi/delimitMate.git
+	url = https://github.com/Raimondi/delimitMate.git
 [submodule "home/.vim/bundle/fuzzyfinder_textmate"]
 	path = home/.vim/bundle/fuzzyfinder_textmate
-	url = git://github.com/sethbc/fuzzyfinder_textmate.git
+	url = https://github.com/sethbc/fuzzyfinder_textmate.git
 [submodule "home/.vim/bundle/tagbar"]
 	path = home/.vim/bundle/tagbar
-	url = git://github.com/majutsushi/tagbar
+	url = https://github.com/majutsushi/tagbar
 [submodule "home/.vim/bundle/tlib_vim"]
 	path = home/.vim/bundle/tlib_vim
-	url = git://github.com/tomtom/tlib_vim.git
+	url = https://github.com/tomtom/tlib_vim.git
 [submodule "home/.vim/bundle/vim-addon-mw-utils"]
 	path = home/.vim/bundle/vim-addon-mw-utils
 	url = https://github.com/MarcWeber/vim-addon-mw-utils.git
 [submodule "home/.vim/bundle/vim-bundler"]
 	path = home/.vim/bundle/vim-bundler
-	url = git://github.com/tpope/vim-bundler.git
+	url = https://github.com/tpope/vim-bundler.git
 [submodule "home/.vim/bundle/vim-coffee-script"]
 	path = home/.vim/bundle/vim-coffee-script
 	url = https://github.com/kchmck/vim-coffee-script.git
@@ -78,16 +78,34 @@
 	url = https://github.com/Lokaltog/vim-powerline.git
 [submodule "home/.vim/bundle/vim-rails"]
 	path = home/.vim/bundle/vim-rails
-	url = git://github.com/tpope/vim-rails.git
+	url = https://github.com/tpope/vim-rails.git
 [submodule "home/.vim/bundle/VimClojure"]
 	path = home/.vim/bundle/VimClojure
 	url = https://github.com/vim-scripts/VimClojure.git
 [submodule "home/.vim/bundle/nerdcommenter"]
 	path = home/.vim/bundle/nerdcommenter
-	url = git@github.com:jeremyjh/nerdcommenter.git
+	url = https://github.com/jeremyjh/nerdcommenter.git
 [submodule "home/.vim/bundle/slimux"]
 	path = home/.vim/bundle/slimux
 	url = https://github.com/epeli/slimux.git
 [submodule "home/.vim/bundle/Ultisnips"]
 	path = home/.vim/bundle/Ultisnips
-	url = https://github.com/vim-scripts/UltiSnips.git
+	url = https://github.com/SirVer/ultisnips
+[submodule "home/.vim/bundle/vim-hdevtools"]
+	path = home/.vim/bundle/vim-hdevtools
+	url = https://github.com/bitc/vim-hdevtools.git
+[submodule "home/.vim/bundle/play2vim"]
+	path = home/.vim/bundle/play2vim
+	url = https://github.com/gre/play2vim
+[submodule "home/.vim/bundle/html5"]
+	path = home/.vim/bundle/html5
+	url = https://github.com/othree/html5.vim
+[submodule "home/.vim/bundle/vim-ultisnip-scala"]
+	path = home/.vim/bundle/vim-ultisnip-scala
+	url = https://github.com/spiroid/vim-ultisnip-scala
+[submodule "home/.vim/bundle/lh-vim-lib"]
+	path = home/.vim/bundle/lh-vim-lib
+	url = https://github.com/vim-scripts/lh-vim-lib
+[submodule "home/.vim/bundle/ultisnips"]
+	path = home/.vim/bundle/ultisnips
+	url = https://github.com/SirVer/ultisnips

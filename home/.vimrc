@@ -1,9 +1,15 @@
 call pathogen#infect()
 syntax on
 filetype plugin indent on
+
+"highlight characters past column 80
+highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+match OverLength /\%>80v.\+/
+
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
@@ -18,8 +24,11 @@ vmap <C-c> "+y
 vmap <C-x> "+c
 vmap <C-v> c<ESC>"+p
 imap <C-v> <ESC>"+pa
-let g:fuzzy_ignore = "*.log"
+
+:let g:NERDTreeIgnore=['\.sock', '\.o', '\.hi', '\.beam']
+let g:fuzzy_ignore = "*.log, *.sock, *.o, *.hi, *.beam"
 let g:fuzzy_matching_limit = 70
+
 autocmd vimenter * if !argc() | NERDTree | endif
 imap jk <Esc>
 
@@ -40,8 +49,6 @@ let g:slime_target="tmux"
 set number
 
 set pastetoggle=<F2>
-"map <F5>  :w <Bar> call VimuxRunLastCommand()<CR>
-"imap <F5> <Esc> :w <Bar> call VimuxRunLastCommand()<CR>
 map <F5>  :w <Bar> :SlimuxShellLast<CR>
 imap <F5> <Esc> :w <Bar> :SlimuxShellLast<CR>
 
@@ -76,6 +83,22 @@ let g:tagbar_type_ruby = {
         \ 'C:contexts',
         \ 'f:methods',
         \ 'F:singleton methods'
+    \ ]
+\ }
+
+let g:tagbar_type_elixir = {
+    \ 'ctagstype' : 'Elixir',
+    \ 'kinds' : [
+        \ 'm:modules',
+        \ 'c:callbacks',
+        \ 'd:delegates',
+        \ 'e:exceptions',
+        \ 'i:impls',
+        \ 'a:macros',
+        \ 'f:functions',
+        \ 'o:operators',
+        \ 'p:protocols',
+        \ 'r:records'
     \ ]
 \ }
 
@@ -182,7 +205,14 @@ function! s:GetVisual() range
 endfunction
 command! -range=% -bar -nargs=* SlimuxREPLSendHelp call SlimuxSendCode("h(" . s:GetVisual() . ")\n")
 
+
 vmap <F1> <Esc>:SlimuxREPLSendHelp<CR>
+au Filetype elixir vmap <F1> <Esc>:SlimuxREPLSendHelp<CR>
+au FileType haskell nnoremap <buffer> <F1> :HdevtoolsType<CR>
+au FileType haskell nnoremap <buffer> <silent> <F2> :HdevtoolsClear<CR>
+
+"put the hdevtools socket in /tmp so it doesn't mess with NERDTree
+let g:hdevtools_options="-g-isrc --socket=/tmp/hdevtools-" . join(split($PWD,"\/"),"-") . "\.sock"
 
 fun! <SID>StripTrailingWhitespaces()
     let l = line(".")
@@ -193,6 +223,3 @@ endfun
 
 autocmd FileType c,cpp,ruby,python,elixir,haskell,erlang autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
-"highlight characters past column 80
-highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-match OverLength /\%81v.*/

@@ -44,7 +44,8 @@ bindkey -M viins 'jk' vi-cmd-mode
 [[ -z "$terminfo[kend]" ]] || bindkey -M viins "$terminfo[kend]" end-of-line
 [[ -z "$terminfo[kdch1]" ]] || bindkey -M viins "$terminfo[kdch1]" vi-delete-char
 
-export PATH=$PATH:/usr/local/play-2.0.4
+export PATH=$PATH:/usr/local/scala-2.10.2/bin
+export PATH=$PATH:/usr/local/play-2.1.1
 export PATH=$PATH:/home/jeremy/.cabal/bin
 export PATH=$PATH:/opt/vagrant/bin
 export PATH=$PATH:/usr/lib/go/bin

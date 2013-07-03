@@ -6,6 +6,8 @@
 .swp
 *.swp
 /tags
+doc/tags
+doc/tags-ja
 
 # Rails generated files we don't version
 coverage.data
