@@ -109,3 +109,6 @@
 [submodule "home/.vim/bundle/ultisnips"]
 	path = home/.vim/bundle/ultisnips
 	url = https://github.com/SirVer/ultisnips
+[submodule "home/.vim/bundle/Greplace"]
+	path = home/.vim/bundle/Greplace
+	url = git@github.com:vim-scripts/greplace.vim.git

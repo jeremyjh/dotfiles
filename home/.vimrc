@@ -3,8 +3,8 @@ syntax on
 filetype plugin indent on
 
 "highlight characters past column 80
-highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-match OverLength /\%>80v.\+/
+"highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+"match OverLength /\%>80v.\+/
 
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
@@ -25,7 +25,7 @@ vmap <C-x> "+c
 vmap <C-v> c<ESC>"+p
 imap <C-v> <ESC>"+pa
 
-:let g:NERDTreeIgnore=['\.sock', '\.o', '\.hi', '\.beam']
+let g:NERDTreeIgnore=['\.sock', '\.o', '\.hi', '\.beam']
 let g:fuzzy_ignore = "*.log, *.sock, *.o, *.hi, *.beam"
 let g:fuzzy_matching_limit = 70
 
@@ -212,7 +212,9 @@ au FileType haskell nnoremap <buffer> <F1> :HdevtoolsType<CR>
 au FileType haskell nnoremap <buffer> <silent> <F2> :HdevtoolsClear<CR>
 
 "put the hdevtools socket in /tmp so it doesn't mess with NERDTree
-let g:hdevtools_options="-g-isrc --socket=/tmp/hdevtools-" . join(split($PWD,"\/"),"-") . "\.sock"
+"local_vimrc is breaking fugitive
+let g:hdevtools_options="-g-isrc -g-idist/build -g-no-user-package-conf -g-package-conf.hsenv/ghc_pkg_db --socket=/tmp/hdevtools-" . join(split($PWD,"\/"),"-") . "\.sock"
+"let g:hdevtools_options="-g-isrc --socket=/tmp/hdevtools-" . join(split($PWD,"\/"),"-") . "\.sock"
 
 fun! <SID>StripTrailingWhitespaces()
     let l = line(".")
@@ -223,3 +225,10 @@ endfun
 
 autocmd FileType c,cpp,ruby,python,elixir,haskell,erlang autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
+source /home/jeremy/.cabal/share/HaRe-0.6.0.3/refactor.vim 
+
+if !exists(":Gdiffoff")
+  command Gdiffoff diffoff | q | Gedit
+endif
+
+map <Leader>gdo :Gdiffoff<CR>

@@ -36,7 +36,7 @@ plugins=(git git-flow gem debian vi-mode rvm bundler)
 source $ZSH/oh-my-zsh.sh
 
 #solarized ls
-eval `dircolors ~/.dircolors`
+#eval `dircolors ~/.dircolors`
 
 bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode
@@ -85,3 +85,6 @@ rget () {
 
 # erlang
 . /home/jeremy/erlang/r16b/activate
+
+#nix
+. /etc/profile.d/nix.sh
