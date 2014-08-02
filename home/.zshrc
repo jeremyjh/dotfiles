@@ -44,11 +44,12 @@ bindkey -M viins 'jk' vi-cmd-mode
 [[ -z "$terminfo[kend]" ]] || bindkey -M viins "$terminfo[kend]" end-of-line
 [[ -z "$terminfo[kdch1]" ]] || bindkey -M viins "$terminfo[kdch1]" vi-delete-char
 
-export PATH=$PATH:/usr/local/scala-2.10.2/bin
+export PATH=$PATH:/usr/local/scala-2.10.3/bin
 export PATH=$PATH:/usr/local/play-2.1.1
 export PATH=$PATH:/home/jeremy/.cabal/bin
 export PATH=$PATH:/opt/vagrant/bin
 export PATH=$PATH:/usr/lib/go/bin
+export PATH=$PATH:/usr/local/ghc-7.8.3/bin
 
 # below was needed to use my local ctags
 export PATH=/usr/local/bin:$PATH
@@ -84,7 +85,21 @@ rget () {
 }
 
 # erlang
-. /home/jeremy/erlang/r16b/activate
+#. /home/jeremy/erlang/r16b/activate
 
 #nix
-. /etc/profile.d/nix.sh
+#. /etc/profile.d/nix.sho#
+export PATH=/home/jeremy/.cabal/bin:$PATH
+export COCOS_CONSOLE_ROOT=/usr/local/cocos2d-x-3.0/tools/cocos2d-console/bin
+export PATH=$COCOS_CONSOLE_ROOT:$PATH
+
+# Add environment variable NDK_ROOT for cocos2d-x
+export NDK_ROOT=/usr/local/android-dev/android-ndk-r9d
+export PATH=$NDK_ROOT:$PATH
+
+# Add environment variable ANDROID_SDK_ROOT for cocos2d-x
+export ANDROID_SDK_ROOT=/usr/local/android-dev/sdk
+export PATH=$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/platform-tools:$PATH
+
+# Add environment variable ANT_ROOT for cocos2d-x
+export ANT_ROOT=/usr/bin

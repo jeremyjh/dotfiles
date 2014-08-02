@@ -26,22 +26,21 @@ vmap <C-v> c<ESC>"+p
 imap <C-v> <ESC>"+pa
 
 let g:NERDTreeIgnore=['\.sock', '\.o', '\.hi', '\.beam']
-let g:fuzzy_ignore = "*.log, *.sock, *.o, *.hi, *.beam"
 let g:fuzzy_matching_limit = 70
 
 autocmd vimenter * if !argc() | NERDTree | endif
 imap jk <Esc>
 
 if has("gui_running")
+  set guioptions-=T
   set background=dark
-  colorscheme desert
+  colorscheme evening
   set gfn=Source\ Code\ Pro\ 9
   set lines=40 columns=150
 else
   colorscheme elflord
 endif
 
-set foldmethod=manual
 set nowrap
 set mouse=a
 syntax enable
@@ -54,6 +53,9 @@ imap <F5> <Esc> :w <Bar> :SlimuxShellLast<CR>
 
 map <F7> :NERDTreeToggle<CR>
 map <F8> :TagbarToggle<CR>
+
+map <Leader>aj :let g:syntastic_auto_jump = !g:syntastic_auto_jump<CR>
+
 " fix coffeescript tab/spacing
 au BufNewFile,BufReadPost *.coffee setl shiftwidth=2 expandtab
 
@@ -61,7 +63,7 @@ au BufNewFile,BufReadPost *.coffee setl shiftwidth=2 expandtab
 set nocompatible   " Disable vi-compatibility
 set laststatus=2   " Always show the statusline
 set encoding=utf-8 " Necessary to show Unicode glyphs
-let g:Powerline_colorscheme = 'solarized'
+let g:Powerline_colorscheme = 'solarized256'
 
 "nmap <C-m> ggVG<C-c><C-c> `.
 vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>
@@ -213,9 +215,35 @@ au FileType haskell nnoremap <buffer> <silent> <F2> :HdevtoolsClear<CR>
 
 "put the hdevtools socket in /tmp so it doesn't mess with NERDTree
 "local_vimrc is breaking fugitive
-let g:hdevtools_options="-g-isrc -g-idist/build -g-no-user-package-conf -g-package-conf.hsenv/ghc_pkg_db --socket=/tmp/hdevtools-" . join(split($PWD,"\/"),"-") . "\.sock"
+"let g:hdevtools_options="-g-Wall -g-isrc -g-itest -g-no-user-package-conf -g-package-conf.hsenv/ghc_pkg_db --socket=/tmp/hdevtools-" . join(split($PWD,"\/"),"-") . "\.sock"
+"--socket=/tmp/hdevtools-" . join(split($PWD,"\/"),"-") . "\.sock"
 "let g:hdevtools_options="-g-isrc --socket=/tmp/hdevtools-" . join(split($PWD,"\/"),"-") . "\.sock"
+function! s:CabalCargs(args)
+   let l:output = system('cabal-cargs --ignore=hdevtools_socket ' . a:args)
+   if v:shell_error != 0
+      let l:lines = split(l:output, '\n')
+      echohl ErrorMsg
+      echomsg 'args: ' . a:args
+      for l:line in l:lines
+         echomsg l:line
+      endfor
+      echohl None
+      return ''
+   endif
+   return l:output
+endfunction
 
+function! s:HdevtoolsOptions()
+    return s:CabalCargs('--format=hdevtools --sourcefile=' . shellescape(expand('%')))
+endfunction
+
+autocmd Bufenter *.hs :call s:InitHaskellVars()
+
+function! s:InitHaskellVars()
+   if filereadable(expand('%'))
+      let g:hdevtools_options = s:HdevtoolsOptions() . "-g-isrc --socket=/tmp/hdevtools-" . join(split($PWD,"\/"),"-") . "\.sock"
+   endif
+endfunction
 fun! <SID>StripTrailingWhitespaces()
     let l = line(".")
     let c = col(".")
@@ -225,10 +253,74 @@ endfun
 
 autocmd FileType c,cpp,ruby,python,elixir,haskell,erlang autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
-source /home/jeremy/.cabal/share/HaRe-0.6.0.3/refactor.vim 
+"source /home/jeremy/.cabal/share/HaRe-0.6.0.3/refactor.vim 
 
 if !exists(":Gdiffoff")
   command Gdiffoff diffoff | q | Gedit
 endif
 
 map <Leader>gdo :Gdiffoff<CR>
+
+let g:syntastic_auto_jump=0
+let g:haskell_conceal=0
+let g:necoghc_enable_detailed_browse=1
+
+autocmd FileType ruby let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
+autocmd FileType haskell let g:SuperTabDefaultCompletionType = "<c-p>"
+
+au BufNewFile,BufRead *.hs map <buffer> <F4> :Hoogle 
+au BufNewFile,BufRead *.hs map <buffer> <C-F4> :HoogleClose<CR>
+
+map <F3> :HsimportSymbol<CR>
+set foldmethod=manual
+
+map <c-r><c-r> :promptr<CR>
+set guitablabel=%N:%M%t "number tabs 
+
+let g:syntastic_always_populate_loc_list=1
+let g:syntastic_auto_loc_list=1
+let g:syntastic_haskell_checkers = ['hdevtools', 'hlint']
+
+map ss :w<CR>
+map qq :q<CR>
+
+map <leader>ll :ll1<CR>
+map <leader>ln :lnext<CR>
+map <leader>lp :lprev<CR>
+
+:map <leader>gs :Gstatus<CR>  
+:map <leader>gd :Gdiff<CR>  
+:map <leader>gdc <C-h>:q<CR> 
+
+map <leader>ff :promptf<CR>
+map <leader>rr :promptr<CR>
+
+map <leader>hl :!hlint %<CR>
+set clipboard=unnamedplus
+
+let g:rbpt_colorpairs = [
+    \ ['brown',       'RoyalBlue3'],
+    \ ['Darkblue',    'SeaGreen3'],
+    \ ['darkgray',    'DarkOrchid3'],
+    \ ['darkgreen',   'firebrick3'],
+    \ ['darkcyan',    'RoyalBlue3'],
+    \ ['darkred',     'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['brown',       'firebrick3'],
+    \ ['gray',        'RoyalBlue3'],
+    \ ['black',       'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['Darkblue',    'firebrick3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkcyan',    'SeaGreen3'],
+    \ ['darkred',     'DarkOrchid3'],
+    \ ['red',         'firebrick3'],
+    \ ]
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+"
+" no hlint for Spec files
+autocmd FileType haskell if stridx(expand('%:p'), '/test/') > 0 | let b:syntastic_checkers = ['hdevtools'] | endif
+autocmd FileType haskell let b:dispatch = 'cabal build'
