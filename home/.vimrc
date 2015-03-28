@@ -34,7 +34,9 @@ imap jk <Esc>
 if has("gui_running")
   set guioptions-=T
   set background=dark
-  colorscheme evening
+  "let g:solarized_termcolors=256
+  "let g:solarized_contrast="high"
+  colorscheme evening 
   set gfn=Source\ Code\ Pro\ 9
   set lines=40 columns=150
 else
@@ -49,6 +51,8 @@ set number
 
 set pastetoggle=<F2>
 map <F5>  :w <Bar> :SlimuxShellLast<CR>
+map <F6>  :w <Bar> :make<CR>
+"map <F5>  :w <Bar> :Dispatch bin/runspec<CR>
 imap <F5> <Esc> :w <Bar> :SlimuxShellLast<CR>
 
 map <F7> :NERDTreeToggle<CR>
@@ -241,7 +245,7 @@ autocmd Bufenter *.hs :call s:InitHaskellVars()
 
 function! s:InitHaskellVars()
    if filereadable(expand('%'))
-      let g:hdevtools_options = s:HdevtoolsOptions() . "-g-isrc --socket=/tmp/hdevtools-" . join(split($PWD,"\/"),"-") . "\.sock"
+      let g:hdevtools_options = s:HdevtoolsOptions() . " -g-isrc -g-itest --socket=/tmp/hdevtools-" . join(split($PWD,"\/"),"-") . "\.sock"
    endif
 endfunction
 fun! <SID>StripTrailingWhitespaces()
@@ -272,7 +276,6 @@ au BufNewFile,BufRead *.hs map <buffer> <F4> :Hoogle
 au BufNewFile,BufRead *.hs map <buffer> <C-F4> :HoogleClose<CR>
 
 map <F3> :HsimportSymbol<CR>
-set foldmethod=manual
 
 map <c-r><c-r> :promptr<CR>
 set guitablabel=%N:%M%t "number tabs 
@@ -281,8 +284,8 @@ let g:syntastic_always_populate_loc_list=1
 let g:syntastic_auto_loc_list=1
 let g:syntastic_haskell_checkers = ['hdevtools', 'hlint']
 
-map ss :w<CR>
-map qq :q<CR>
+map <Leader>w :w<CR>
+map <Leader>q :q<CR>
 
 map <leader>ll :ll1<CR>
 map <leader>ln :lnext<CR>
@@ -294,6 +297,8 @@ map <leader>lp :lprev<CR>
 
 map <leader>ff :promptf<CR>
 map <leader>rr :promptr<CR>
+
+map <leader>st :%!stylish-haskell<CR> 
 
 map <leader>hl :!hlint %<CR>
 set clipboard=unnamedplus
@@ -324,3 +329,19 @@ au Syntax * RainbowParenthesesLoadBraces
 " no hlint for Spec files
 autocmd FileType haskell if stridx(expand('%:p'), '/test/') > 0 | let b:syntastic_checkers = ['hdevtools'] | endif
 autocmd FileType haskell let b:dispatch = 'cabal build'
+au BufWritePost *.hs silent !fast-tags %
+au BufWritePost *.hsc silent !fast-tags %
+let g:necoghc_debug = 0
+
+if exists('g:syntastic_extra_filetypes')
+    call add(g:syntastic_extra_filetypes, 'rust')
+else
+    let g:syntastic_extra_filetypes = ['rust']
+endif
+
+au BufRead,BufNewFile *.rs setl filetype=rust shiftwidth=2 tabstop=2 softtabstop=2 expandtab
+
+"todo - should be a snippet
+map <Leader>dstg i deriving (Show, Typeable, Generic) <Esc><CR>  
+map <Leader>co :Copen<CR>
+

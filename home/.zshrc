@@ -49,7 +49,8 @@ export PATH=$PATH:/usr/local/play-2.1.1
 export PATH=$PATH:/home/jeremy/.cabal/bin
 export PATH=$PATH:/opt/vagrant/bin
 export PATH=$PATH:/usr/lib/go/bin
-export PATH=$PATH:/usr/local/ghc-7.8.3/bin
+export PATH=/usr/local/haste-compiler/bin:$PATH
+#export PATH=$PATH:/usr/local/ghc-7.8.3/bin
 
 # below was needed to use my local ctags
 export PATH=/usr/local/bin:$PATH
