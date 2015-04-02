@@ -7,14 +7,13 @@
   (setq-default
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (ie. `~/.mycontribs/')
-   dotspacemacs-configuration-layer-path '()
+   dotspacemacs-configuration-layer-path '(~/.emacs.d/private)
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
-   dotspacemacs-configuration-layers '(themes-megapack git
-                                       (haskell :variables haskell-enable-ghci-ng-support t
-                                                           ;;haskell-enable-shm-support t
-                                                           haskell-enable-hindent-support "johan-tibell")
+   dotspacemacs-configuration-layers '(themes-megapack git hdevtools
+                                       (haskell :variables haskell-enable-ghci-ng-support t)
                                       )
+                                       ;;                    haskell-enable-hindent-support "johan-tibell")
    ;; A list of packages and/or extensions that will not be install and loadedw.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -107,8 +106,8 @@ before layers configuration."
    ;; Not used for now.
    dotspacemacs-default-package-repository nil
    ;; User initialization goes here
-   evil-escape-key-sequence "jk"
-  ))
+   evil-escape-key-sequence "jk" )
+  )
 
 (defun dotspacemacs/config ()
   "Configuration function.
@@ -116,7 +115,17 @@ before layers configuration."
 layers configuration."
 ;;  (setq flycheck-ghc-package-databases (list (expand-file-name ".cabal-sandbox/x86_64-linux-ghc-7.8.3-packages.conf.d")))
   (evil-escape-mode 1)
-  (setq debug-on-error t)
+  (setq evil-shift-width 4)
+  (setq flycheck-check-syntax-automatically '(mode-enabled save idle-change))
+  (setq haskell-process-suggest-hoogle-imports t)
+  (eval-after-load 'flycheck-hdevtools
+                   '(setq flycheck-hdevtools-options (concat "--socket="
+                            (flycheck-module-root-directory
+                              (flycheck-find-in-buffer flycheck-haskell-module-re))
+                            ".hdevtools.sock")))
+
+
+;;  (setq debug-on-error t)
 )
 
 
