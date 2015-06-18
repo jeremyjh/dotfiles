@@ -10,12 +10,12 @@
    dotspacemacs-configuration-layer-path '(~/.emacs.d/private)
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
-   dotspacemacs-configuration-layers '(themes-megapack git hdevtools
-                                       (haskell :variables haskell-enable-ghci-ng-support t)
-                                      )
-                                       ;;                    haskell-enable-hindent-support "johan-tibell")
+   dotspacemacs-configuration-layers '(themes-megapack git hdevtools scala butler syntax-checking rust typescript
+                                       (auto-complete :variables auto-completion-enable-company-help-tooltip t)
+                                       (haskell :variables haskell-enable-ghci-ng-support t))
+;;                                                          ;; haskell-enable-hindent-support "johan-tibell")
    ;; A list of packages and/or extensions that will not be install and loadedw.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(avy)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'
@@ -107,22 +107,55 @@ before layers configuration."
    dotspacemacs-default-package-repository nil
    ;; User initialization goes here
    evil-escape-key-sequence "jk" )
+  (autoload 'haskell-indentation-enable-show-indentations "haskell-indentation")
+  (autoload 'haskell-indentation-disable-show-indentations "haskell-indentation")
   )
 
+
 (defun dotspacemacs/config ()
-  "Configuration function.
+  "Configuration function
  This function is called at the very end of Spacemacs initialization after
 layers configuration."
-;;  (setq flycheck-ghc-package-databases (list (expand-file-name ".cabal-sandbox/x86_64-linux-ghc-7.8.3-packages.conf.d")))
   (evil-escape-mode 1)
-  (setq evil-shift-width 4)
+  (global-flycheck-mode t)
+
   (setq flycheck-check-syntax-automatically '(mode-enabled save idle-change))
-  (setq haskell-process-suggest-hoogle-imports t)
+  (add-hook 'shell-mode-hook 'compilation-shell-minor-mode)
+  (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+
+  ;; Haskell config
+  (add-hook 'haskell-mode-hook
+    (lambda ()
+      (message "running haskell mode hook")
+      (setq default-tab-width 4)
+      (setq evil-shift-width 4)
+      (setq haskell-indent-spaces 4)
+      (setq tab-width 4)
+      (define-key haskell-mode-map [f5] 'haskell-process-load-or-reload)
+      (define-key haskell-mode-map [f12] 'haskell-process-reload-devel-main)
+      (haskell-indentation-mode f)
+      (setq haskell-process-suggest-hoogle-imports t)
+      (flycheck-mode t)
+    ))
+
   (eval-after-load 'flycheck-hdevtools
                    '(setq flycheck-hdevtools-options (concat "--socket="
                             (flycheck-module-root-directory
                               (flycheck-find-in-buffer flycheck-haskell-module-re))
                             ".hdevtools.sock")))
+
+  ;; Rust config
+  (setq racer-rust-src-path "/usr/local/src/rustc-1.0.0/src")
+  (setq racer-cmd "/usr/local/bin/racer")
+  (add-hook 'rust-mode-hook
+    (lambda ()
+        (message "running rust mode hook")
+        (setq default-tab-width 4)
+        (setq evil-shift-width 4)
+        (setq tab-width 4)
+        (flycheck-mode t)
+        ))
+
 
 
 ;;  (setq debug-on-error t)

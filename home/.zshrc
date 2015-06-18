@@ -45,12 +45,13 @@ bindkey -M viins 'jk' vi-cmd-mode
 [[ -z "$terminfo[kdch1]" ]] || bindkey -M viins "$terminfo[kdch1]" vi-delete-char
 
 export PATH=$PATH:/usr/local/scala-2.10.3/bin
+export PATH=/usr/local/sbt/bin:$PATH
 export PATH=$PATH:/usr/local/play-2.1.1
 export PATH=$PATH:/home/jeremy/.cabal/bin
 export PATH=$PATH:/opt/vagrant/bin
 export PATH=$PATH:/usr/lib/go/bin
 export PATH=/usr/local/haste-compiler/bin:$PATH
-export PATH=/usr/local/ghc-7.8.3/bin:$PATH
+export PATH=$PATH:/usr/local/ghc-7.8.3/bin
 
 # below was needed to use my local ctags
 export PATH=/usr/local/bin:$PATH
