@@ -35,6 +35,13 @@ configure
 libtool
 stamp-h1
 
+#CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
+*.pc
+
 # Packages #
 ###########
 # it's better to unpack these files and commit the raw source
@@ -64,3 +71,5 @@ stamp-h1
 Icon?
 ehthumbs.db
 Thumbs.db
+
+

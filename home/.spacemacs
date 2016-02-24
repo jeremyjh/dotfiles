@@ -7,13 +7,13 @@
   (setq-default
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (ie. `~/.mycontribs/')
-   dotspacemacs-configuration-layer-path '(~/.emacs.d/private)
+   dotspacemacs-configuration-layer-path '("~/.emacs.d/private/")
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
-   dotspacemacs-configuration-layers '(themes-megapack git hdevtools scala butler syntax-checking rust typescript
-                                       (auto-complete :variables auto-completion-enable-company-help-tooltip t)
-                                       (haskell :variables haskell-enable-ghci-ng-support t))
-;;                                                          ;; haskell-enable-hindent-support "johan-tibell")
+   dotspacemacs-configuration-layers
+       '(themes-megapack git hdevtools scala misc syntax-checking rust typescript elixir
+        (auto-complete :variables auto-completion-enable-company-help-tooltip t)
+        (haskell :variables haskell-enable-hindent-style "chris-done"))
    ;; A list of packages and/or extensions that will not be install and loadedw.
    dotspacemacs-excluded-packages '(avy)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -112,31 +112,39 @@ before layers configuration."
   )
 
 
-(defun dotspacemacs/config ()
+(defun dotspacemacs/user-config ()
   "Configuration function
  This function is called at the very end of Spacemacs initialization after
 layers configuration."
   (evil-escape-mode 1)
   (global-flycheck-mode t)
+  (setq-default rust-enable-racer t)
+  (global-set-key (kbd "TAB") #'company-indent-or-complete-common)
 
   (setq flycheck-check-syntax-automatically '(mode-enabled save idle-change))
   (add-hook 'shell-mode-hook 'compilation-shell-minor-mode)
   (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+  ;;don't chdir when opening a file
+  (add-hook 'find-file-hook
+            (lambda ()
+              (setq default-directory command-line-default-directory)))
 
   ;; Haskell config
   (add-hook 'haskell-mode-hook
     (lambda ()
       (message "running haskell mode hook")
-      (setq default-tab-width 4)
       (setq evil-shift-width 4)
       (setq haskell-indent-spaces 4)
       (setq tab-width 4)
       (define-key haskell-mode-map [f5] 'haskell-process-load-or-reload)
       (define-key haskell-mode-map [f12] 'haskell-process-reload-devel-main)
-      (haskell-indentation-mode f)
       (setq haskell-process-suggest-hoogle-imports t)
-      (flycheck-mode t)
+      (setq haskell-process-use-presentation-mode t)
     ))
+
+  (evil-define-key 'normal haskell-presentation-mode-map
+    (kbd "q") 'quit-window
+    (kbd "c") 'haskell-presentation-clear)
 
   (eval-after-load 'flycheck-hdevtools
                    '(setq flycheck-hdevtools-options (concat "--socket="
@@ -145,16 +153,30 @@ layers configuration."
                             ".hdevtools.sock")))
 
   ;; Rust config
-  (setq racer-rust-src-path "/usr/local/src/rustc-1.0.0/src")
-  (setq racer-cmd "/usr/local/bin/racer")
+  (setq racer-cmd "/home/jeremy/.multirust/toolchains/stable/cargo/bin/racer")
+  (setq racer-rust-src-path "/home/jeremy/repos/rust/rust/src")
+  (add-hook 'racer-mode-hook #'eldoc-mode)
   (add-hook 'rust-mode-hook
     (lambda ()
         (message "running rust mode hook")
         (setq default-tab-width 4)
         (setq evil-shift-width 4)
         (setq tab-width 4)
-        (flycheck-mode t)
+        (company-mode t)
+        (racer-mode)
         ))
+
+  ;;Elixir
+  (defun mix-dialyzer ()
+    (interactive)
+    (alchemist-mix-execute (list "dialyzer") nil))
+
+  (evil-leader/set-key-for-mode 'elixir-mode
+    "mmd" 'mix-dialyzer)
+
+  (add-hook 'elixir-mode-hook
+    (lambda ()
+        (message "running elixir hook")))
 
 
 
@@ -164,3 +186,30 @@ layers configuration."
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ahs-case-fold-search nil)
+ '(ahs-default-range (quote ahs-range-whole-buffer))
+ '(ahs-idle-interval 0.25)
+ '(ahs-idle-timer 0 t)
+ '(ahs-inhibit-face-list nil)
+ '(haskell-indent-spaces 4)
+ '(ring-bell-function (quote ignore) t)
+ '(safe-local-variable-values
+   (quote
+    ((haskell-proces-args-ghci "ghci" "--with-ghc" "ghci-ng")
+     (haskell-process-ghci . "stack")
+     (haskell-process-type \.ghci)
+     (haskell-process-use-ghci . t)
+     (haskell-indent-spaces . 4)
+     (flycheck-rust-args "--extern" "rand=//home/jeremy/play/rust/dining/target/debug/deps/librand-b924d9fc5b3eb5b8.rlib")
+     (flycheck-rust-extern "rand=//home/jeremy/play/rust/dining/target/debug/deps/librand-b924d9fc5b3eb5b8.rlib")))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:foreground "#E0E0E0" :background "#202020")))))

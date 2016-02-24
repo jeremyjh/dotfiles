@@ -1,3 +1,6 @@
 [user]
 	email = jeremy@jeremyhuffman.com
 	name = Jeremy Huffman
+[core]
+	autocrlf = input
+	excludesfile = ~/.gitignore_global
