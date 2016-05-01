@@ -66,13 +66,9 @@ alias tmux="TERM=xterm-256color tmux"
 
 export EDITOR=/usr/bin/vim
 
-#riak expansions
-rget () {
-	curl http://127.0.0.1:8098/riak/$1
-}
+#cache github key
+added_keys=`ssh-add -l`
 
-# erlang
-#. /home/jeremy/erlang/r16b/activate
-
-#nix
-#. /etc/profile.d/nix.sho#
+if [ ! $(echo $added_keys | grep -o -e github) ]; then
+		ssh-add "$HOME/.ssh/github"
+fi
