@@ -11,11 +11,17 @@
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
-       '(themes-megapack git scala misc syntax-checking rust typescript elixir
-          (auto-completion :variables
-                          auto-completion-enable-company-help-tooltip t
-                          auto-completion-enable-snippets-in-popup t)
-          (haskell :variables haskell-enable-hindent-style "chris-done"))
+   '(
+     sql python pony csv gtags
+     themes-megapack git scala syntax-checking dash
+     rust typescript elixir purescript javascript react yaml
+     (markdown :variables markdown-live-preview-engine 'vmd)
+     (auto-completion :variables
+                      auto-completion-enable-company-help-tooltip t
+                      auto-completion-enable-snippets-in-popup t)
+     (haskell :variables haskell-enable-hindent-style "chris-done"
+                         haskell-completion-backend 'intero)
+     (ruby :variables ruby-test-runner 'ruby-test))
    ;; A list of packages and/or extensions that will not be install and loadedw.
    dotspacemacs-excluded-packages '(avy)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -40,9 +46,10 @@ before layers configuration."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(lush
-                         solarized-light
+   dotspacemacs-themes '(
+                         lush
                          solarized-dark
+                         solarized-light
                          leuven
                          monokai
                          zenburn)
@@ -113,21 +120,60 @@ before layers configuration."
   (autoload 'haskell-indentation-disable-show-indentations "haskell-indentation")
   )
 
-
 (defun dotspacemacs/user-config ()
   "Configuration function
  This function is called at the very end of Spacemacs initialization after
 layers configuration."
   (evil-escape-mode 1)
+  ;;fix clipboard!
+  (fset 'evil-visual-update-x-selection 'ignore)
   (setq-default rust-enable-racer t)
 
-  (setq flycheck-check-syntax-automatically '(mode-enabled save idle-change))
   (add-hook 'shell-mode-hook 'compilation-shell-minor-mode)
   (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+
+  ;; disable lockfiles
+  ;; see http://www.gnu.org/software/emacs/manual/html_node/emacs/Interlocking.html
+  (setq create-lockfiles nil)
+
+  ;; store all backup files in the tmp dir
+  ;; http://www.gnu.org/software/emacs/manual/html_node/emacs/Backup-Names.html
+  (setq backup-directory-alist
+        `((".*" . ,temporary-file-directory)))
+
+  ;; store all autosave files in the tmp dir
+  ;; http://www.gnu.org/software/emacs/manual/html_node/emacs/Auto-Save-Files.html
+  (setq auto-save-file-name-transforms
+        `((".*" ,temporary-file-directory t)))
+
+  ;; autosave the undo-tree history
+  (setq undo-tree-history-directory-alist
+        `((".*" . ,temporary-file-directory)))
+  (setq undo-tree-auto-save-history t)
+
+
   ;;don't chdir when opening a file
   (add-hook 'find-file-hook
             (lambda ()
               (setq default-directory command-line-default-directory)))
+  (defun intero-repl-reload-run-main (&optional prompt-options)
+    (interactive "P")
+    (intero-repl-load)
+    (let (repl-buffer (intero-repl-buffer prompt-options))
+      (with-current-buffer repl-buffer
+        (comint-send-string
+        (get-buffer-process (current-buffer))
+        (":help \n")))))
+
+  (defun intero-repl-reload-run-main ()
+    (intero-repl-load)
+    (let (
+          (repl-buffer (intero-repl-buffer nil)))
+      (with-current-buffer repl-buffer
+        (comint-send-string
+         (get-buffer-process (current-buffer))
+         (concat "main" "\n")))
+      (pop-to-buffer repl-buffer)))
 
   ;; Haskell config
   (add-hook 'haskell-mode-hook
@@ -136,14 +182,21 @@ layers configuration."
       (setq-default evil-shift-width 4)
       (setq haskell-indent-spaces 4)
       (setq tab-width 4)
-      (define-key haskell-mode-map [f5] 'haskell-process-load-or-reload)
+      (define-key haskell-mode-map [f5] 'intero-repl-load)
+      (define-key haskell-mode-map [f6] 'intero-repl-reload-run-main)
       (define-key haskell-mode-map [f12] 'haskell-process-reload-devel-main)
       (setq haskell-process-suggest-hoogle-imports t)
       (setq haskell-process-use-presentation-mode t)
       (setq haskell-process-args-stack-ghci '("--ghc-options=-ferror-spans" "--test"))
       ;; (setq haskell-process-args-stack-ghci '("--ghc-options=-ferror-spans" "--test"))
       (company-mode)
-      (flycheck-mode 0)
+      (let ((checkers '(haskell-ghc haskell-stack-ghc)))
+        (if (boundp 'flycheck-disabled-checkers)
+            (dolist (checker checkers)
+            (add-to-list 'flycheck-disabled-checkers checker))
+        (setq flycheck-disabled-checkers checkers)))
+      (flycheck-add-next-checker 'intero
+                                 '(warning . haskell-hlint))
     ))
 
   (evil-define-key 'normal haskell-presentation-mode-map
@@ -188,11 +241,55 @@ layers configuration."
   (evil-leader/set-key-for-mode 'elixir-mode
     "mmd" 'mix-dialyzer)
 
+  (spacemacs/helm-gtags-define-keys-for-mode 'elixir-mode)
+
   (add-hook 'elixir-mode-hook
     (lambda ()
-        (message "running elixir hook")))
+      (message "running elixir hook")
+      (spacemacs//elixir-enable-compilation-checking)
+      (define-key elixir-mode-map [f5] (lambda ()
+        (interactive)
+        (save-buffer)
+        (alchemist-iex-reload-module)))
+
+      (define-key elixir-mode-map [f6] (lambda ()
+        (interactive)
+        (save-buffer)
+        (alchemist-mix-test)))
+
+   ))
+
+  ;;Scala
+  (if (file-readable-p "./scalastyle-config.xml")
+      (setq-default flycheck-scalastylerc "./scalastyle-config.xml")
+    (setq-default flycheck-scalastylerc "~/scalastyle-config.xml"))
+
+  (setq-default ensime-startup-notification nil)
+
+  ;;Javascript
+  (setq-default js-indent-level 2)
+  (setq-default js2-basic-offset 2)
+
+  ;;use react-mode for all js
+  (setq auto-mode-alist (rassq-delete-all 'js2-mode auto-mode-alist))
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . react-mode))
+  (spacemacs/helm-gtags-define-keys-for-mode 'react-mode)
 
 
+  ;;Typescript
+  (if (file-readable-p "node_modules/typescript/bin/tsserver")
+      (setq tide-tsserver-executable "node_modules/typescript/bin/tsserver"))
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
+
+  ;;Pony
+  (add-hook 'ponylang-mode-hook
+            (lambda ()
+              (message "running pony hook")
+              (define-key ponylang-mode-map [f5] (lambda ()
+                                                 (interactive)
+                                                 (save-buffer)
+                                                 (shell-command "ponyc && ./out")))
+   ))
 
 ;;  (setq debug-on-error t)
 )
@@ -205,13 +302,26 @@ layers configuration."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ahs-case-fold-search nil)
- '(ahs-default-range (quote ahs-range-whole-buffer))
- '(ahs-idle-interval 0.25)
+ '(ahs-case-fold-search nil t)
+ '(ahs-default-range (quote ahs-range-whole-buffer) t)
+ '(ahs-idle-interval 0.25 t)
  '(ahs-idle-timer 0 t)
- '(ahs-inhibit-face-list nil)
- '(ring-bell-function (quote ignore) t)
-)
+ '(ahs-inhibit-face-list nil t)
+ '(auto-save-default nil)
+ '(custom-safe-themes
+   (quote
+    ("0820d191ae80dcadc1802b3499f84c07a09803f2cb90b343678bdb03d225b26b" default)))
+ '(ensime-sem-high-enabled-p nil)
+ '(ensime-typecheck-idle-interval 1.5)
+ '(exec-path-from-shell-arguments (quote ("-l")))
+ '(flycheck-check-syntax-automatically (quote (save idle-change mode-enabled)))
+ '(haskell-hoogle-command "stack hoogle --")
+ '(package-selected-packages
+   (quote
+    (helm-gtags ggtags ghc dash json-mode diminish winum madhat2r-theme fuzzy csv-mode flycheck-pony ponylang-mode vmd-mode powerline pcre2el spinner org multiple-cursors hydra projectile request haml-mode seq iedit anzu sbt-mode scala-mode autothemer tern rust-mode bind-key yasnippet elixir-mode avy auto-complete inf-ruby company highlight smartparens bind-map evil undo-tree flycheck haskell-mode helm helm-core js2-mode magit magit-popup git-commit with-editor async purescript-mode f s flycheck-credo yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic sql-indent markdown-toc mmm-mode markdown-mode gh-md yaml-mode uuidgen toc-org tide typescript-mode rake pug-mode org-plus-contrib org-bullets ob-elixir minitest livid-mode skewer-mode simple-httpd link-hint intero hlint-refactor hide-comnt helm-hoogle git-link flycheck-mix eyebrowse evil-visual-mark-mode evil-unimpaired evil-ediff dumb-jump darkokai-theme company-ghci column-enforce-mode cargo zeal-at-point helm-dash zonokai-theme zenburn-theme zen-and-art-theme ws-butler window-numbering which-key web-mode web-beautify volatile-highlights vi-tilde-fringe use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tss tronesque-theme toxi-theme toml-mode tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme stekene-theme spacemacs-theme spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smooth-scrolling smeargle slim-mode shm seti-theme scss-mode sass-mode rvm ruby-tools ruby-test-mode ruby-end rubocop rspec-mode robe reverse-theme restart-emacs rbenv rainbow-delimiters railscasts-theme racer quelpa purple-haze-theme psci psc-ide professional-theme popwin planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pastels-on-dark-theme paradox page-break-lines orgit organic-green-theme open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noflet noctilux-theme niflheim-theme neotree naquadah-theme mustang-theme move-text monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme magit-gitflow lush-theme lorem-ipsum linum-relative light-soap-theme leuven-theme less-css-mode js2-refactor js-doc jbeans-theme jazz-theme jade-mode ir-black-theme inkpot-theme info+ indent-guide ido-vertical-mode hungry-delete hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger gandalf-theme flycheck-rust flycheck-pos-tip flycheck-haskell flx-ido flatui-theme flatland-theme firebelly-theme fill-column-indicator farmhouse-theme fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu espresso-theme ensime emmet-mode dracula-theme django-theme define-word darktooth-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme company-web company-tern company-statistics company-racer company-quickhelp company-ghc company-cabal colorsarenice-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode cmm-mode clues-theme clean-aindent-mode chruby cherry-blossom-theme busybee-theme bundler buffer-move bubbleberry-theme bracketed-paste birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes alchemist aggressive-indent afternoon-theme adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
+ '(ring-bell-function (quote ignore))
+ '(truncate-lines t)
+ '(typescript-indent-level 2))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

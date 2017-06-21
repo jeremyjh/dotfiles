@@ -65,10 +65,13 @@ alias tmux="TERM=xterm-256color tmux"
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
 export EDITOR=/usr/bin/vim
+function docker() { sudo docker $@; }
+function docker-compose() { sudo docker-compose $@; }
 
-#cache github key
-added_keys=`ssh-add -l`
+function emacs() { setsid emacs $@ > /dev/null }
 
-if [ ! $(echo $added_keys | grep -o -e github) ]; then
-		ssh-add "$HOME/.ssh/github"
-fi
+alias git=hub
+source /usr/share/nvm/init-nvm.sh
+setopt histignorespace
+
+export KUBECONFIG=/home/jeremy/.bluemix/plugins/container-service/clusters/jeremy-lite/kube-config-prod-dal10-jeremy-lite.yml
