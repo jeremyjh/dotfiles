@@ -31,7 +31,7 @@ ZSH_THEME="superjarin"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git git-flow gem debian vi-mode rvm bundler)
+plugins=(git git-flow gem vi-mode rvm bundler)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -71,7 +71,7 @@ function docker-compose() { sudo docker-compose $@; }
 function emacs() { setsid emacs $@ > /dev/null }
 
 alias git=hub
-source /usr/share/nvm/init-nvm.sh
+#source /usr/share/nvm/init-nvm.sh
 setopt histignorespace
 
 export KUBECONFIG=/home/jeremy/.bluemix/plugins/container-service/clusters/jeremy-lite/kube-config-prod-dal10-jeremy-lite.yml

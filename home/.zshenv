@@ -39,19 +39,12 @@ export COCOS_CONSOLE_ROOT=/usr/local/cocos2d-x-3.8.1/tools/cocos2d-console/bin
 export COCOS_TEMPLATES_ROOT=/usr/local/cocos2d-x-3.8.1/templates
 export PATH=$COCOS_TEMPLATES_ROOT:$PATH
 
-# Erlang
-#source ~/erlang/18.2.1/activate
-
 #Locals
 export PATH=~/.local/bin:$PATH
 
 #Current Haskell
 #export PATH=/home/jeremy/.stack/programs/x86_64-linux/ghc-7.10.3/bin:$PATH
 if [ -e /home/jeremy/.nix-profile/etc/profile.d/nix.sh ]; then . /home/jeremy/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
-
-#emscripten sdk -- unfortunately this borks us to an old node
-#source /usr/local/emsdk_portable/emsdk_env.sh
-#export EMSCRIPTEN_ROOT=$EMSCRIPTEN
 
 export URHO3D_HOME=/usr/local/Urho3D-1.5/build
 
@@ -105,4 +98,7 @@ alias etcg='sudo etckeeper vcs'
 
 
 #man pages stay on screen on exit
-export LESS="-X"
+export LESS="-R"
+export POSTGRES_USER=jeremy
+
+. $HOME/.asdf/asdf.sh
