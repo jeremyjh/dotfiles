@@ -1,7 +1,9 @@
-uses [homesick](https://github.com/technicalpickles/homesick)
+uses [homeshick](https://github.com/andsens/homeshick)
 
-gem install homesick
+git clone git://github.com/andsens/homeshick.git $HOME/.homesick/repos/homeshick
 
-homesick clone jeremyjh/dotfiles
+source .homesick/repos/homeshick/homeshick.sh
 
-homesick symlink jeremyjh/dotfiles
+homeshick clone jeremyjh/dotfiles
+
+homeshick link jeremyjh/dotfiles

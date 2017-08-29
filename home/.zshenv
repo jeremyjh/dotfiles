@@ -1,9 +1,6 @@
 PATH=$PATH:$HOME/.rvm/bin
 PATH=$PATH:$HOME/.bin
 
-#set JAVA_HOME using update alternative loc
-export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:bin/javac::")
-
 export PATH=$PATH:/usr/local/scala-2.11.8/bin
 export PATH=/usr/local/sbt/bin:$PATH
 export PATH=$PATH:/usr/local/play-2.1.1
@@ -101,5 +98,4 @@ alias etcg='sudo etckeeper vcs'
 export LESS="-R"
 export POSTGRES_USER=jeremy
 
-. $HOME/.asdf/asdf.sh
-. $HOME/.envlocal
+source $HOME/.envlocal

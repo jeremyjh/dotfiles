@@ -68,10 +68,12 @@ export EDITOR=/usr/bin/vim
 function docker() { sudo docker $@; }
 function docker-compose() { sudo docker-compose $@; }
 
-function emacs() { setsid emacs $@ > /dev/null }
-
 alias git=hub
 #source /usr/share/nvm/init-nvm.sh
 setopt histignorespace
 
 export KUBECONFIG=/home/jeremy/.bluemix/plugins/container-service/clusters/jeremy-lite/kube-config-prod-dal10-jeremy-lite.yml
+
+export PATH="$HOME/.bin:$PATH"
+eval "$(rbenv init - --no-rehash)"
+source $HOME/.asdf/asdf.sh
