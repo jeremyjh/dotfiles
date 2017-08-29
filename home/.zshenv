@@ -102,3 +102,4 @@ export LESS="-R"
 export POSTGRES_USER=jeremy
 
 . $HOME/.asdf/asdf.sh
+. $HOME/.envlocal
