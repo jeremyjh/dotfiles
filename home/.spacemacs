@@ -164,6 +164,11 @@ layers configuration."
   (add-hook 'shell-mode-hook 'compilation-shell-minor-mode)
   (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
+  ;; display full buffer path in title window
+  (setq frame-title-format
+  (list (format "%s %%S: %%j " (system-name))
+        '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+
   ;; disable lockfiles
   ;; see http://www.gnu.org/software/emacs/manual/html_node/emacs/Interlocking.html
   (setq create-lockfiles nil)
