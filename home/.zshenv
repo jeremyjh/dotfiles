@@ -89,13 +89,15 @@ then
 fi
 unset idfile is_local_client
 
-#aliases
-alias etck='sudo etckeeper'
-alias etcg='sudo etckeeper vcs'
-
-
 #man pages stay on screen on exit
 export LESS="-R"
 export POSTGRES_USER=jeremy
 
 source $HOME/.envlocal
+
+export PATH="$HOME/.cargo/bin:$PATH"
+
+. /home/jeremy/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+
+export PATH="$HOME/.bin:$PATH"
+source $HOME/.asdf/asdf.sh

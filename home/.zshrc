@@ -65,15 +65,20 @@ alias tmux="TERM=xterm-256color tmux"
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
 export EDITOR=/usr/bin/vim
-function docker() { sudo docker $@; }
-function docker-compose() { sudo docker-compose $@; }
 
-alias git=hub
-#source /usr/share/nvm/init-nvm.sh
+if [[ `uname` == 'Linux' ]]; then
+  function docker() { sudo docker $@; }
+  function docker-compose() { sudo docker-compose $@; }
+  function emacs() { setsid emacs $@ > /dev/null }
+fi
+
 setopt histignorespace
 
 export KUBECONFIG=/home/jeremy/.bluemix/plugins/container-service/clusters/jeremy-lite/kube-config-prod-dal10-jeremy-lite.yml
 
-export PATH="$HOME/.bin:$PATH"
-eval "$(rbenv init - --no-rehash)"
-source $HOME/.asdf/asdf.sh
+alias etck='sudo etckeeper'
+alias etcg='sudo etckeeper vcs'
+
+if type hub > /dev/null; then
+  alias git=hub
+fi
