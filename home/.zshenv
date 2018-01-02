@@ -101,3 +101,5 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 export PATH="$HOME/.bin:$PATH"
 source $HOME/.asdf/asdf.sh
+
+export ERL_AFLAGS="-kernel shell_history enabled"
