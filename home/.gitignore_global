@@ -71,4 +71,7 @@ Icon?
 ehthumbs.db
 Thumbs.db
 
+#Python
+.venv
+
 
