@@ -31,6 +31,10 @@
    ;; the list `dotspacemacs-configuration-layers'
    dotspacemacs-delete-orphan-packages t))
 
+(defun dotspacemacs/user-init ()
+  (setq custom-file "~/.spacemacs-custom.el")
+  )
+
 (defun dotspacemacs/init ()
   "Initialization function.
 This function is called at the very startup of Spacemacs initialization
@@ -38,7 +42,6 @@ before layers configuration."
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
 
-  (setq custom-file "~/.spacemacs-custom.el")
 
   (setq-default
    ;; Specify the startup banner. Default value is `official', it displays
@@ -196,6 +199,7 @@ layers configuration."
     (message "running prog-mode-hook")
     (dtrt-indent-mode)
     (dtrt-indent-adapt)
+    (spacemacs/toggle-truncate-lines-on)
     (linum-mode t)
     (linum-relative-mode)))
 
@@ -315,6 +319,7 @@ layers configuration."
       ;;(spacemacs//elixir-enable-compilation-checking)
       (flycheck-mix-setup)
       (setenv "NO_WALLABY" "true")
+      (setenv "VERBOSE" "false")
 
       (define-key elixir-mode-map [f4] (lambda ()
                                          (interactive)

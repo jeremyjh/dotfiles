@@ -1,4 +1,3 @@
-call pathogen#infect()
 syntax on
 filetype plugin indent on
 
@@ -217,37 +216,6 @@ au Filetype elixir vmap <F1> <Esc>:SlimuxREPLSendHelp<CR>
 au FileType haskell nnoremap <buffer> <F1> :HdevtoolsType<CR>
 au FileType haskell nnoremap <buffer> <silent> <F2> :HdevtoolsClear<CR>
 
-"put the hdevtools socket in /tmp so it doesn't mess with NERDTree
-"local_vimrc is breaking fugitive
-"let g:hdevtools_options="-g-Wall -g-isrc -g-itest -g-no-user-package-conf -g-package-conf.hsenv/ghc_pkg_db --socket=/tmp/hdevtools-" . join(split($PWD,"\/"),"-") . "\.sock"
-"--socket=/tmp/hdevtools-" . join(split($PWD,"\/"),"-") . "\.sock"
-"let g:hdevtools_options="-g-isrc --socket=/tmp/hdevtools-" . join(split($PWD,"\/"),"-") . "\.sock"
-function! s:CabalCargs(args)
-   let l:output = system('cabal-cargs --ignore=hdevtools_socket ' . a:args)
-   if v:shell_error != 0
-      let l:lines = split(l:output, '\n')
-      echohl ErrorMsg
-      echomsg 'args: ' . a:args
-      for l:line in l:lines
-         echomsg l:line
-      endfor
-      echohl None
-      return ''
-   endif
-   return l:output
-endfunction
-
-function! s:HdevtoolsOptions()
-    return s:CabalCargs('--format=hdevtools --sourcefile=' . shellescape(expand('%')))
-endfunction
-
-autocmd Bufenter *.hs :call s:InitHaskellVars()
-
-function! s:InitHaskellVars()
-   if filereadable(expand('%'))
-      let g:hdevtools_options = s:HdevtoolsOptions() . " -g-isrc -g-itest --socket=/tmp/hdevtools-" . join(split($PWD,"\/"),"-") . "\.sock"
-   endif
-endfunction
 fun! <SID>StripTrailingWhitespaces()
     let l = line(".")
     let c = col(".")
@@ -256,8 +224,6 @@ fun! <SID>StripTrailingWhitespaces()
 endfun
 
 autocmd FileType c,cpp,ruby,python,elixir,haskell,erlang autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
-
-"source /home/jeremy/.cabal/share/HaRe-0.6.0.3/refactor.vim 
 
 if !exists(":Gdiffoff")
   command Gdiffoff diffoff | q | Gedit
@@ -321,27 +287,14 @@ let g:rbpt_colorpairs = [
     \ ['darkred',     'DarkOrchid3'],
     \ ['red',         'firebrick3'],
     \ ]
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
 "
 " no hlint for Spec files
-autocmd FileType haskell if stridx(expand('%:p'), '/test/') > 0 | let b:syntastic_checkers = ['hdevtools'] | endif
-autocmd FileType haskell let b:dispatch = 'cabal build'
 au BufWritePost *.hs silent !fast-tags %
 au BufWritePost *.hsc silent !fast-tags %
 let g:necoghc_debug = 0
-
-if exists('g:syntastic_extra_filetypes')
-    call add(g:syntastic_extra_filetypes, 'rust')
-else
-    let g:syntastic_extra_filetypes = ['rust']
-endif
 
 au BufRead,BufNewFile *.rs setl filetype=rust shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 
 "todo - should be a snippet
 map <Leader>dstg i deriving (Show, Typeable, Generic) <Esc><CR>  
 map <Leader>co :Copen<CR>
-
