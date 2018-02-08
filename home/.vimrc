@@ -1,6 +1,8 @@
 syntax on
 filetype plugin indent on
 
+let mapleader=" "
+
 "highlight characters past column 80
 "highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 "match OverLength /\%>80v.\+/
@@ -27,7 +29,7 @@ imap <C-v> <ESC>"+pa
 let g:NERDTreeIgnore=['\.sock', '\.o', '\.hi', '\.beam']
 let g:fuzzy_matching_limit = 70
 
-autocmd vimenter * if !argc() | NERDTree | endif
+" autocmd vimenter * if !argc() | NERDTree | endif
 imap jk <Esc>
 
 if has("gui_running")
@@ -261,13 +263,16 @@ map <leader>lp :lprev<CR>
 :map <leader>gd :Gdiff<CR>  
 :map <leader>gdc <C-h>:q<CR> 
 
+map <leader>fs :w<CR>
+
 map <leader>ff :promptf<CR>
 map <leader>rr :promptr<CR>
 
 map <leader>st :%!stylish-haskell<CR> 
 
 map <leader>hl :!hlint %<CR>
-set clipboard=unnamedplus
+
+"set clipboard=unnamedplus - this breaks yank
 
 let g:rbpt_colorpairs = [
     \ ['brown',       'RoyalBlue3'],
@@ -296,5 +301,4 @@ let g:necoghc_debug = 0
 au BufRead,BufNewFile *.rs setl filetype=rust shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 
 "todo - should be a snippet
-map <Leader>dstg i deriving (Show, Typeable, Generic) <Esc><CR>  
 map <Leader>co :Copen<CR>
