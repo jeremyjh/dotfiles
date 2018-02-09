@@ -70,6 +70,8 @@ if [[ `uname` == 'Linux' ]]; then
   function docker() { sudo docker $@; }
   function docker-compose() { sudo docker-compose $@; }
   function emacs() { setsid emacs $@ > /dev/null }
+else
+  function emacs() { nohup emacs $@ > /dev/null 2>&1 & }
 fi
 
 setopt histignorespace
