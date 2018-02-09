@@ -12,7 +12,7 @@
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
    '(elm
-     syntax-checking ocaml sql python pony csv erlang html org
+     syntax-checking ocaml sql python pony csv erlang html
      themes-megapack git scala dash
      rust typescript elixir purescript yaml javascript aj-javascript
      (markdown :variables markdown-live-preview-engine 'vmd)
@@ -169,6 +169,9 @@ layers configuration."
 
   (add-hook 'shell-mode-hook 'compilation-shell-minor-mode)
   (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+
+  (setq spacemacs-default-jump-handlers
+        (remove 'evil-goto-definition spacemacs-default-jump-handlers))
 
   ;; display full buffer path in title window
   (setq frame-title-format
