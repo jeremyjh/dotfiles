@@ -60,7 +60,9 @@ idfile=~/.agentid
 if [ -z $SSH_CLIENT ]
 then
     is_local_client=YES
-    export SSH_ASKPASS="/usr/bin/ksshaskpass"
+    if [[ `uname` == 'Linux' ]]; then
+      export SSH_ASKPASS="/usr/bin/ksshaskpass"
+    fi
 else
     is_local_client=NO
 fi

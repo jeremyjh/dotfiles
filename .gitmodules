@@ -1,27 +1,3 @@
 [submodule "home/.oh-my-zsh"]
 	path = home/.oh-my-zsh
 	url = https://github.com/robbyrussell/oh-my-zsh.git
-[submodule "home/.vim/bundle/cvim-pathogen"]
-	path = home/.vim/bundle/cvim-pathogen
-	url = https://github.com/jbowles/cvim-pathogen.git
-[submodule "home/.vim/bundle/vim-snipmate"]
-	path = home/.vim/bundle/vim-snipmate
-	url = https://github.com/msanders/snipmate.vim.git
-[submodule "home/.vim/bundle/snipmate-snippets"]
-	path = home/.vim/bundle/snipmate-snippets
-	url = https://github.com/scrooloose/snipmate-snippets.git
-[submodule "home/.vim/bundle/vimux"]
-	path = home/.vim/bundle/vimux
-	url = https://github.com/benmills/vimux.git
-[submodule "home/.vim/bundle/vim-slime"]
-	path = home/.vim/bundle/vim-slime
-	url = https://github.com/jpalardy/vim-slime.git
-[submodule "home/.vim/bundle/Ultisnips"]
-	path = home/.vim/bundle/Ultisnips
-	url = https://github.com/SirVer/ultisnips
-[submodule "home/.vim/bundle/lh-vim-lib"]
-	path = home/.vim/bundle/lh-vim-lib
-	url = https://github.com/vim-scripts/lh-vim-lib
-[submodule "home/.vim/bundle/Greplace"]
-	path = home/.vim/bundle/Greplace
-	url = git@github.com:vim-scripts/greplace.vim.git
