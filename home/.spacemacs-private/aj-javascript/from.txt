@@ -1,0 +1,1 @@
+https://github.com/aaronjensen/spacemacs.d/tree/master/layers/%2Baj/aj-javascript
