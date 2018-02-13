@@ -7,7 +7,7 @@
   (setq-default
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (ie. `~/.mycontribs/')
-   dotspacemacs-configuration-layer-path '("~/.emacs.d/private/")
+   dotspacemacs-configuration-layer-path '("~/.spacemacs-private/")
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
@@ -162,7 +162,6 @@ layers configuration."
   (evil-escape-mode 1)
   ;;fix clipboard!
   (fset 'evil-visual-update-x-selection 'ignore)
-
   (spacemacs/toggle-indent-guide-globally-on)
 
   (global-linum-mode t)
