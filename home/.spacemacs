@@ -33,6 +33,7 @@
 
 (defun dotspacemacs/user-init ()
   (setq custom-file "~/.spacemacs-custom.el")
+  (load custom-file)
   )
 
 (defun dotspacemacs/init ()
