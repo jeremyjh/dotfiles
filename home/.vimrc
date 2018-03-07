@@ -302,3 +302,4 @@ au BufRead,BufNewFile *.rs setl filetype=rust shiftwidth=2 tabstop=2 softtabstop
 
 "todo - should be a snippet
 map <Leader>co :Copen<CR>
+set shiftwidth=2 tabstop=2 softtabstop=2 expandtab

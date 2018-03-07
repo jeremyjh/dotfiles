@@ -13,7 +13,7 @@
    dotspacemacs-configuration-layers
    '(elm
      syntax-checking ocaml sql python pony csv erlang html
-     themes-megapack git scala dash
+     themes-megapack git scala dash clojure
      rust typescript elixir purescript yaml javascript aj-javascript
      (markdown :variables markdown-live-preview-engine 'vmd)
      (gtags :variables gtags-enable-by-default nil)
@@ -395,6 +395,9 @@ layers configuration."
                                                  (save-buffer)
                                                  (shell-command "ponyc && ./out")))
    ))
+
+  ;; Purescript
+  (setq psc-ide-use-npm-bin t)
 
 ;;  (setq debug-on-error t)
 )
