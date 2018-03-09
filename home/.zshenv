@@ -36,6 +36,9 @@ export COCOS_CONSOLE_ROOT=/usr/local/cocos2d-x-3.8.1/tools/cocos2d-console/bin
 export COCOS_TEMPLATES_ROOT=/usr/local/cocos2d-x-3.8.1/templates
 export PATH=$COCOS_TEMPLATES_ROOT:$PATH
 
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+
+export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 #Locals
 export PATH=~/.local/bin:$PATH
 
