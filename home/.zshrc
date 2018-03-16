@@ -71,7 +71,7 @@ if [[ `uname` == 'Linux' ]]; then
   function docker-compose() { sudo docker-compose $@; }
   function emacs() { setsid emacs $@ > /dev/null }
 else
-  function emacs() { nohup emacs $@ > /dev/null 2>&1 & }
+  function emacs() { /usr/bin/nohup emacs $@ > /dev/null 2>&1 & }
 fi
 
 setopt histignorespace
@@ -90,3 +90,4 @@ alias staging="HEROKU_APP=smart-erp-staging heroku $@"
 alias prod="HEROKU_APP=smart-erp-production heroku $@"
 alias cont="HEROKU_APP=smart-erp-contingency heroku $@"
 alias reporting="HEROKU_APP=smart-erp-reporting heroku $@"
+alias cons="HEROKU_APP=smart-erp-consolidated heroku $@"
