@@ -23,6 +23,12 @@ export NDK_ROOT=/usr/local/android-ndk
 export ANDROID_NDK_ROOT=$NDK_ROOT
 export PATH=$NDK_ROOT:$PATH
 
+#Golang homebrew paths
+export GOPATH=$HOME/Go
+export GOROOT=/usr/local/opt/go/libexec
+export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:$GOROOT/bin
+
 # Add environment variable ANDROID_SDK_ROOT for cocos2d-x
 export ANDROID_SDK_ROOT=/opt/android-sdk
 export ANDROID_HOME=$ANDROID_SDK_ROOT
