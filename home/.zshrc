@@ -91,3 +91,11 @@ alias prod="HEROKU_APP=smart-erp-production heroku $@"
 alias cont="HEROKU_APP=smart-erp-contingency heroku $@"
 alias reporting="HEROKU_APP=smart-erp-reporting heroku $@"
 alias cons="HEROKU_APP=smart-erp-consolidated heroku $@"
+
+function stack-completions() {
+  autoload -U +X compinit && compinit
+  autoload -U +X bashcompinit && bashcompinit
+  eval "$(stack --bash-completion-script stack)"
+}
+
+which stack &> /dev/null && stack-completions

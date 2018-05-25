@@ -11,8 +11,8 @@
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
-   '(elm
-     syntax-checking ocaml sql python csv erlang html
+   '(elm restclient
+     syntax-checking sql python csv erlang html
      themes-megapack git scala dash clojure
      rust typescript elixir purescript yaml javascript aj-javascript
      (markdown :variables markdown-live-preview-engine 'vmd)
@@ -20,7 +20,8 @@
      (auto-completion :variables
                       auto-completion-enable-company-help-tooltip t
                       auto-completion-enable-snippets-in-popup t)
-     (haskell :variables haskell-enable-hindent-style "chris-done"
+     (haskell :variables haskell-enable-hindent t
+                         haskell-enable-hindent-style "johan-tibell"
                          haskell-completion-backend 'intero)
      (ruby :variables ruby-test-runner 'ruby-test))
    ;; A list of packages and/or extensions that will not be install and loadedw.
@@ -32,6 +33,7 @@
    dotspacemacs-delete-orphan-packages t))
 
 (defun dotspacemacs/user-init ()
+
   (setq custom-file "~/.spacemacs-custom.el")
   (load custom-file)
   )
@@ -231,20 +233,26 @@ layers configuration."
          (concat "main" "\n")))
       (pop-to-buffer repl-buffer)))
 
+  (defun my-haskell-run-devel ()
+    "Reloads the current module and then hot-reloads code via DevelMain.update."
+    (interactive)
+    (save-buffer)
+    (intero-devel-reload))
+
   ;; Haskell config
   (add-hook 'haskell-mode-hook
     (lambda ()
       (message "running haskell mode hook")
+      (hindent-mode)
       (setq-default evil-shift-width 4)
       (setq haskell-indent-spaces 4)
       (setq tab-width 4)
+      (haskell-indent-mode)
       (define-key haskell-mode-map [f5] 'intero-repl-load)
-      (define-key haskell-mode-map [f6] 'intero-repl-reload-run-main)
-      (define-key haskell-mode-map [f12] 'haskell-process-reload-devel-main)
+      (define-key haskell-mode-map [f6] 'intero-devel-reload)
       (setq haskell-process-suggest-hoogle-imports t)
       (setq haskell-process-use-presentation-mode t)
       (setq haskell-process-args-stack-ghci '("--ghc-options=-ferror-spans" "--test"))
-      ;; (setq haskell-process-args-stack-ghci '("--ghc-options=-ferror-spans" "--test"))
       (company-mode)
       (let ((checkers '(haskell-ghc haskell-stack-ghc)))
         (if (boundp 'flycheck-disabled-checkers)
@@ -309,7 +317,13 @@ layers configuration."
     (prettify-symbols-mode))
 
   (add-hook 'haskell-mode-hook 'my-set-hasklig-ligatures)
-  (add-hook 'purescript-mode-hook 'my-set-hasklig-ligatures)
+
+  (add-hook 'purescript-mode-hook
+            (lambda ()
+              (message "running purescript mode hook")
+              (my-set-hasklig-ligatures)
+              (setq purescript-indent-mode nil)
+              ))
 
   ;; Rust config
   (setq-default rust-enable-racer t)
