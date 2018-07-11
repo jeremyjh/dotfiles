@@ -12,7 +12,7 @@
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
    '(elm
-     syntax-checking ocaml sql python pony csv erlang html
+     syntax-checking ocaml sql python csv erlang html
      themes-megapack git scala dash clojure
      rust typescript elixir purescript yaml javascript aj-javascript
      (markdown :variables markdown-live-preview-engine 'vmd)
@@ -25,7 +25,7 @@
      (ruby :variables ruby-test-runner 'ruby-test))
    ;; A list of packages and/or extensions that will not be install and loadedw.
    dotspacemacs-excluded-packages '(avy)
-   dotspacemacs-additional-packages '(dtrt-indent)
+   dotspacemacs-additional-packages '(dtrt-indent vue-mode)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'
@@ -311,6 +311,7 @@ layers configuration."
 
   (add-to-list 'spacemacs-indent-sensitive-modes 'elixir-mode)
   (setq alchemist-mix-command "~/.asdf/shims/mix")
+  (setq alchemist-mix-env "dev")
   (setq alchemist-iex-program-name "~/.asdf/shims/iex")
   (setq alchemist-execute-command "~/.asdf/shims/elixir")
   (setq alchemist-compile-command "~/.asdf/shims/elixirc")
@@ -321,7 +322,8 @@ layers configuration."
       (message "running elixir hook")
       ;;(spacemacs//elixir-enable-compilation-checking)
       (flycheck-mix-setup)
-      (setenv "NO_WALLABY" "true")
+      (setenv "IN_EDITOR" "true")
+      (setenv "MIX_ENV" "test")
       (setenv "VERBOSE" "false")
 
       (define-key elixir-mode-map [f4] (lambda ()
@@ -371,7 +373,14 @@ layers configuration."
 
   (add-to-list 'spacemacs-indent-sensitive-modes 'rjsx-mode)
   ;;use rjsx-mode(react) for vuejs
-  (add-to-list 'auto-mode-alist '("\\.vue\\'" . rjsx-mode))
+  (add-to-list 'auto-mode-alist '("\\.vue\\'" . vue-mode))
+
+  (add-hook 'vue-mode-hook
+            (lambda ()
+              (message "running vue hook")
+              (flycheck-add-mode 'javascript-eslint 'vue-html-mode)
+              (flycheck-mode)
+              ))
 
   ;; somehow this is breaking rjsx mode
   ;; (my-personal-code-style)
@@ -380,6 +389,15 @@ layers configuration."
   ;; (add-hook 'react-mode-hook 'my-personal-code-style)
   ;; (add-hook 'sh-mode-hook 'my-personal-code-style)
 
+  (defun copy-file-name-to-clipboard ()
+    "Copy the current buffer file name to the clipboard."
+    (interactive)
+    (let ((filename (if (equal major-mode 'dired-mode)
+                        default-directory
+                      (buffer-file-name))))
+      (when filename
+        (kill-new filename)
+        (message "Copied buffer file name '%s' to the clipboard." filename))))
 
   ;;Typescript
   (if (file-readable-p "node_modules/typescript/bin/tsserver")
