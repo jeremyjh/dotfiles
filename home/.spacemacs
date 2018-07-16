@@ -317,6 +317,13 @@ layers configuration."
   (setq alchemist-compile-command "~/.asdf/shims/elixirc")
   (setq flycheck-elixir-credo-executable "~/.asdf/shims/mix")
 
+  (defun mix-format-on-save ()
+    "Sync org file to Raspberry Pi with external script."
+    (when (eq major-mode 'elixir-mode)
+      (elixir-format)))
+
+  (add-hook 'after-save-hook #'mix-format-on-save)
+
   (add-hook 'elixir-mode-hook
     (lambda ()
       (message "running elixir hook")
