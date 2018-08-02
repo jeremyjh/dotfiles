@@ -8,6 +8,7 @@
 /tags
 doc/tags
 doc/tags-ja
+.elixir_ls
 
 # Rails generated files we don't version
 coverage.data

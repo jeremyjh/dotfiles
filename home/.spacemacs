@@ -25,7 +25,7 @@
      (ruby :variables ruby-test-runner 'ruby-test))
    ;; A list of packages and/or extensions that will not be install and loadedw.
    dotspacemacs-excluded-packages '(avy)
-   dotspacemacs-additional-packages '(dtrt-indent vue-mode)
+   dotspacemacs-additional-packages '(dtrt-indent vue-mode eslint-fix)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'
@@ -164,6 +164,8 @@ layers configuration."
   ;;fix clipboard!
   (fset 'evil-visual-update-x-selection 'ignore)
   (spacemacs/toggle-indent-guide-globally-on)
+
+  (setq tab-always-indent t)
 
   (global-linum-mode t)
 
@@ -318,11 +320,13 @@ layers configuration."
   (setq flycheck-elixir-credo-executable "~/.asdf/shims/mix")
 
   (defun mix-format-on-save ()
-    "Sync org file to Raspberry Pi with external script."
     (when (eq major-mode 'elixir-mode)
       (elixir-format)))
 
-  (add-hook 'after-save-hook #'mix-format-on-save)
+  ;;(add-hook 'after-save-hook #'mix-format-on-save)
+
+  ;; until alchemist regexp overflow is fixed
+  (spacemacs|disable-company elixir-mode)
 
   (add-hook 'elixir-mode-hook
     (lambda ()
@@ -377,6 +381,15 @@ layers configuration."
   (setq-default ensime-startup-notification nil)
 
   ;;javascript
+
+  (eval-after-load 'vue-mode
+    '(add-hook 'vue-mode-hook (lambda () (add-hook 'after-save-hook 'eslint-fix nil t))))
+
+  (eval-after-load 'js2-mode
+    '(add-hook 'js2-mode-hook (lambda () (add-hook 'after-save-hook 'eslint-fix nil t))))
+
+  (eval-after-load 'rjsx-mode
+    '(add-hook 'rjsx-mode-hook (lambda () (add-hook 'after-save-hook 'eslint-fix nil t))))
 
   (add-to-list 'spacemacs-indent-sensitive-modes 'rjsx-mode)
   ;;use rjsx-mode(react) for vuejs
