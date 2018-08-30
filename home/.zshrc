@@ -76,8 +76,6 @@ fi
 
 setopt histignorespace
 
-export KUBECONFIG=/home/jeremy/.bluemix/plugins/container-service/clusters/jeremy-lite/kube-config-prod-dal10-jeremy-lite.yml
-
 alias etck='sudo etckeeper'
 alias etcg='sudo etckeeper vcs'
 
@@ -97,5 +95,7 @@ function stack-completions() {
   autoload -U +X bashcompinit && bashcompinit
   eval "$(stack --bash-completion-script stack)"
 }
+
+alias k=kubectl
 
 which stack &> /dev/null && stack-completions

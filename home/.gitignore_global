@@ -26,13 +26,10 @@ coverage/
 .deps/
 m4/
 autom4te.cache/
-Makefile
-Makefile.in
 **config.h
 **config.h.in
 config.log
 config.status
-configure
 libtool
 stamp-h1
 
@@ -75,4 +72,4 @@ Thumbs.db
 #Python
 .venv
 
-
+.dir-locals.el

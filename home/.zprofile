@@ -4,7 +4,6 @@ PATH=$PATH:$HOME/.bin
 export PATH=$PATH:/usr/local/scala-2.11.8/bin
 export PATH=/usr/local/sbt/bin:$PATH
 export PATH=$PATH:/usr/local/play-2.1.1
-export PATH=$PATH:/home/jeremy/.cabal/bin
 export PATH=$PATH:/opt/vagrant/bin
 export PATH=$PATH:/usr/lib/go/bin
 export PATH=/usr/local/haste-compiler/bin:$PATH
@@ -15,7 +14,6 @@ export PATH=$PATH:$HOME/go/bin
 
 # below was needed to use my local ctags
 export PATH=/usr/local/bin:$PATH
-export PATH=/home/jeremy/.cabal/bin:$PATH
 export PATH=$COCOS_CONSOLE_ROOT:$PATH
 
 # Add environment variable NDK_ROOT for cocos2d-x
@@ -49,7 +47,6 @@ export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 export PATH=~/.local/bin:$PATH
 
 #Current Haskell
-#export PATH=/home/jeremy/.stack/programs/x86_64-linux/ghc-7.10.3/bin:$PATH
 
 export URHO3D_HOME=/usr/local/Urho3D-1.5/build
 
@@ -107,10 +104,15 @@ source $HOME/.envlocal
 
 export PATH="$HOME/.cargo/bin:$PATH"
 
-. /home/jeremy/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+#. /home/jeremy/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
 export PATH="$HOME/.bin:$PATH"
 source $HOME/.asdf/asdf.sh
 
 export ERL_AFLAGS="-kernel shell_history enabled"
 source $HOME/.cargo/env
+
+# Nix
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+fi

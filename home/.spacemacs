@@ -34,8 +34,12 @@
 
 (defun dotspacemacs/user-init ()
 
+
+  (setq configuration-layer-elpa-archives '(("melpa" . "melpa.org/packages/")
+  ("org" . "orgmode.org/elpa/") ("gnu" . "elpa.gnu.org/packages/")))
   (setq custom-file "~/.spacemacs-custom.el")
   (load custom-file)
+  (setq evil-respect-visual-line-mode t)
   )
 
 (defun dotspacemacs/init ()
@@ -247,7 +251,7 @@ layers configuration."
       (setq-default evil-shift-width 4)
       (setq haskell-indent-spaces 4)
       (setq tab-width 4)
-      (haskell-indent-mode)
+      (haskell-indent-mode 0)
       (define-key haskell-mode-map [f5] 'intero-repl-load)
       (define-key haskell-mode-map [f6] 'intero-devel-reload)
       (setq haskell-process-suggest-hoogle-imports t)
@@ -421,7 +425,8 @@ layers configuration."
   (add-hook 'markdown-mode-hook
     (lambda ()
       (message "running markdown mode hook")
-      (spacemacs/toggle-visual-line-navigation)))
+      (visual-line-mode)
+      ))
 
   ;;Scala
   (if (file-readable-p "./scalastyle-config.xml")
