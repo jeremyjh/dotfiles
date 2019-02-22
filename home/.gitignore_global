@@ -9,6 +9,7 @@
 doc/tags
 doc/tags-ja
 .elixir_ls
+.vscode
 
 # Rails generated files we don't version
 coverage.data
