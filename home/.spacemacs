@@ -358,12 +358,12 @@ layers configuration."
     (alchemist-mix-execute (list "dialyzer") nil))
   (evil-leader/set-key-for-mode 'elixir-mode
     "md" 'mix-dialyzer)
-  (defun mix-firebase ()
+  (defun mix-format()
     (interactive)
     (save-buffer)
-    (alchemist-mix-execute (list "firebase_seeds") nil))
+    (alchemist-mix-execute (list "format") nil))
   (evil-leader/set-key-for-mode 'elixir-mode
-    "mf" 'mix-firebase)
+    "mf" 'mix-format)
 
   (add-to-list 'spacemacs-indent-sensitive-modes 'elixir-mode)
   (setq alchemist-mix-command "~/.asdf/shims/mix")
@@ -378,9 +378,6 @@ layers configuration."
       (elixir-format)))
 
   ;;(add-hook 'after-save-hook #'mix-format-on-save)
-
-  ;; until alchemist regexp overflow is fixed
-  (spacemacs|disable-company elixir-mode)
 
   (add-hook 'elixir-mode-hook
     (lambda ()
@@ -400,7 +397,7 @@ layers configuration."
         (interactive)
         (save-buffer)
         (f-touch (shell-quote-argument (buffer-file-name)))
-        (alchemist-iex-reload-module)))
+        (alchemist-iex-compile-this-buffer-and-go)))
 
       (define-key elixir-mode-map [f6] (lambda ()
         (interactive)
@@ -446,7 +443,6 @@ layers configuration."
   (eval-after-load 'rjsx-mode
     '(add-hook 'rjsx-mode-hook (lambda () (add-hook 'after-save-hook 'eslint-fix nil t))))
 
-  (add-to-list 'spacemacs-indent-sensitive-modes 'rjsx-mode)
   ;;use rjsx-mode(react) for vuejs
   (add-to-list 'auto-mode-alist '("\\.vue\\'" . vue-mode))
 
@@ -454,6 +450,8 @@ layers configuration."
             (lambda ()
               (message "running vue hook")
               (flycheck-add-mode 'javascript-eslint 'vue-html-mode)
+              (electric-indent-local-mode)
+              (dtrt-indent-mode)
               (flycheck-mode)
               ))
 
