@@ -110,7 +110,10 @@ export PATH="$HOME/.bin:$PATH"
 source $HOME/.asdf/asdf.sh
 
 export ERL_AFLAGS="-kernel shell_history enabled"
-source $HOME/.cargo/env
+
+if [ -f $HOME/.cargo/env ]; then
+  source $HOME/.cargo/env
+fi
 
 # Nix
 if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then

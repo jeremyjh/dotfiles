@@ -443,7 +443,7 @@ layers configuration."
   (eval-after-load 'rjsx-mode
     '(add-hook 'rjsx-mode-hook (lambda () (add-hook 'after-save-hook 'eslint-fix nil t))))
 
-  ;;use rjsx-mode(react) for vuejs
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
   (add-to-list 'auto-mode-alist '("\\.vue\\'" . vue-mode))
 
   (add-hook 'vue-mode-hook
