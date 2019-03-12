@@ -31,7 +31,7 @@ ZSH_THEME="superjarin"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git git-flow gem vi-mode rvm bundler)
+plugins=(git git-flow gem vi-mode rvm bundler kube-ps1)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -43,6 +43,9 @@ bindkey -M viins 'jk' vi-cmd-mode
 [[ -z "$terminfo[khome]" ]] || bindkey -M viins "$terminfo[khome]" beginning-of-line
 [[ -z "$terminfo[kend]" ]] || bindkey -M viins "$terminfo[kend]" end-of-line
 [[ -z "$terminfo[kdch1]" ]] || bindkey -M viins "$terminfo[kdch1]" vi-delete-char
+
+bindkey  "^[[H"   beginning-of-line
+bindkey  "^[[F"   end-of-line
 
 
 if [ -f ~/.zsh_nocorrect ]; then
@@ -99,3 +102,11 @@ function stack-completions() {
 alias k=kubectl
 
 which stack &> /dev/null && stack-completions
+
+if [[ -f /opt/google-cloud-sdk/completion.zsh.inc ]]; then
+  source /opt/google-cloud-sdk/completion.zsh.inc
+fi
+
+if [ $commands[helm] ]; then
+  source <(helm completion zsh)
+fi

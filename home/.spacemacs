@@ -11,7 +11,7 @@
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
-   '(elm restclient
+   '(go elm restclient terraform
      syntax-checking sql python csv erlang html
      themes-megapack git scala dash clojure
      rust typescript elixir purescript yaml javascript aj-javascript
@@ -218,6 +218,8 @@ layers configuration."
   (add-hook 'find-file-hook
             (lambda ()
               (setq default-directory command-line-default-directory)))
+
+  ;; Haskell config
   (defun intero-repl-reload-run-main (&optional prompt-options)
     (interactive "P")
     (intero-repl-load)
@@ -243,13 +245,16 @@ layers configuration."
     (save-buffer)
     (intero-devel-reload))
 
-  ;; Haskell config
+  (evil-leader/set-key-for-mode 'haskell-mode
+    "," 'haskell-navigate-imports-return)
+
   (add-hook 'haskell-mode-hook
     (lambda ()
       (message "running haskell mode hook")
       (hindent-mode)
       (setq-default evil-shift-width 4)
       (setq haskell-indent-spaces 4)
+      (dtrt-indent-mode nil)
       (setq tab-width 4)
       (haskell-indent-mode 0)
       (define-key haskell-mode-map [f5] 'intero-repl-load)
