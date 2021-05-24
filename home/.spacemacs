@@ -11,10 +11,11 @@
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
-   '(go elm restclient terraform
+   '(go elm vue restclient terraform emacs-lisp lsp osx
      syntax-checking sql python csv erlang html
      themes-megapack git scala dash clojure
      rust typescript elixir purescript yaml javascript aj-javascript
+     (shell :variables shell-default-shell 'vterm)
      (markdown :variables markdown-live-preview-engine 'vmd)
      (gtags :variables gtags-enable-by-default nil)
      (auto-completion :variables
@@ -25,8 +26,8 @@
                          haskell-completion-backend 'intero)
      (ruby :variables ruby-test-runner 'ruby-test))
    ;; A list of packages and/or extensions that will not be install and loadedw.
-   dotspacemacs-excluded-packages '(avy)
-   dotspacemacs-additional-packages '(dtrt-indent vue-mode eslint-fix)
+   dotspacemacs-excluded-packages '(avy alchemist)
+   dotspacemacs-additional-packages '(dtrt-indent eslint-fix exunit dap-mode zig-mode)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'
@@ -171,6 +172,15 @@ layers configuration."
   (fset 'evil-visual-update-x-selection 'ignore)
   (spacemacs/toggle-indent-guide-globally-on)
 
+
+  ;; use eyebrowse on emacs27
+  (with-eval-after-load 'evil-maps
+    (when (featurep 'tab-bar)
+      (define-key evil-normal-state-map "gt" nil)
+      (define-key evil-normal-state-map "gT" nil)))
+
+  ;; https://github.com/syl20bnr/spacemacs/issues/9044
+  (setq-default helm-display-function 'helm-default-display-buffer)
   (setq tab-always-indent t)
 
   (global-linum-mode t)
@@ -200,10 +210,12 @@ layers configuration."
   (setq auto-save-file-name-transforms
         `((".*" ,temporary-file-directory t)))
 
+  (setq spacemacs-auto-resume-layouts t)
+
   ;; autosave the undo-tree history
-  (setq undo-tree-history-directory-alist
-        `((".*" . ,temporary-file-directory)))
-  (setq undo-tree-auto-save-history t)
+  ;; (setq undo-tree-history-directory-alist
+  ;;       `((".*" . ,temporary-file-directory)))
+  ;; (setq undo-tree-auto-save-history t)
 
   ;; ;; in all source buffers
   (add-hook 'prog-mode-hook #'(lambda ()
@@ -211,8 +223,8 @@ layers configuration."
     (dtrt-indent-mode)
     (dtrt-indent-adapt)
     (spacemacs/toggle-truncate-lines-on)
-    (linum-mode t)
-    (linum-relative-mode)))
+    (linum-mode -1)
+    (spacemacs/toggle-relative-line-numbers)))
 
   ;;don't chdir when opening a file
   (add-hook 'find-file-hook
@@ -252,6 +264,7 @@ layers configuration."
     (lambda ()
       (message "running haskell mode hook")
       (hindent-mode)
+      (intero-mode)
       (setq-default evil-shift-width 4)
       (setq haskell-indent-spaces 4)
       (dtrt-indent-mode nil)
@@ -269,8 +282,7 @@ layers configuration."
             (add-to-list 'flycheck-disabled-checkers checker))
         (setq flycheck-disabled-checkers checkers)))
       (flycheck-add-next-checker 'intero
-                                 '(warning . haskell-hlint))
-    ))
+                                 '(warning . haskell-hlint))))
 
   (evil-define-key 'normal haskell-presentation-mode-map
     (kbd "q") 'quit-window
@@ -331,8 +343,7 @@ layers configuration."
             (lambda ()
               (message "running purescript mode hook")
               (my-set-hasklig-ligatures)
-              (setq purescript-indent-mode nil)
-              ))
+              (setq purescript-indent-mode nil)))
 
   ;; Rust config
   (setq-default rust-enable-racer t)
@@ -344,8 +355,8 @@ layers configuration."
         (setq tab-width 4)
         (company-mode)
         (racer-mode)
-        (flycheck-mode)
-        ))
+        (setq-local flycheck-check-syntax-automatically '(save))
+        (flycheck-mode)))
 
   ;; Ocaml
 
@@ -366,9 +377,25 @@ layers configuration."
   (defun mix-format()
     (interactive)
     (save-buffer)
-    (alchemist-mix-execute (list "format") nil))
+    (shell-command "mix format"))
+
   (evil-leader/set-key-for-mode 'elixir-mode
     "mf" 'mix-format)
+
+  (evil-leader/set-key-for-mode 'web-mode
+    "tr" 'exunit-rerun)
+
+  (use-package lsp-mode
+    :commands lsp
+    :ensure t
+    :diminish lsp-mode
+    :hook
+    (elixir-mode . lsp)
+    :init
+    (add-to-list 'exec-path "/Users/jeremy/repos/elixir-lsp/elixir-ls/release"))
+
+  ;; rebind q to close doc windows in lsp-mode
+  (evil-define-key 'normal view-mode-map "q" #'spacemacs/delete-window)
 
   (add-to-list 'spacemacs-indent-sensitive-modes 'elixir-mode)
   (setq alchemist-mix-command "~/.asdf/shims/mix")
@@ -376,7 +403,7 @@ layers configuration."
   (setq alchemist-iex-program-name "~/.asdf/shims/iex")
   (setq alchemist-execute-command "~/.asdf/shims/elixir")
   (setq alchemist-compile-command "~/.asdf/shims/elixirc")
-  (setq flycheck-elixir-credo-executable "~/.asdf/shims/mix")
+  (setq flycheck-elixir-credo-executable "/Users/jeremy/.asdf/shims/mix")
 
   (defun mix-format-on-save ()
     (when (eq major-mode 'elixir-mode)
@@ -387,33 +414,41 @@ layers configuration."
   (add-hook 'elixir-mode-hook
     (lambda ()
       (message "running elixir hook")
-      ;;(spacemacs//elixir-enable-compilation-checking)
-      (flycheck-mix-setup)
+      (company-mode)
+
+      (setq lsp-flycheck-live-reporting nil)
+      (setq lsp-enable-file-watchers nil)
+      (setq-local flycheck-check-syntax-automatically '(mode-enabled save))
       (setenv "IN_EDITOR" "true")
       (setenv "MIX_ENV" "test")
-      (setenv "VERBOSE" "false")
+      (setenv "VERBOSE" "false")))
 
-      (define-key elixir-mode-map [f4] (lambda ()
-                                         (interactive)
-                                         (save-buffer)
-                                         (alchemist-iex-compile-this-buffer-and-go)))
+  (with-eval-after-load 'elixir-mode
+    (spacemacs/declare-prefix-for-mode 'elixir-mode
+      "mt" "tests" "testing related functionality")
+    (spacemacs/set-leader-keys-for-major-mode 'elixir-mode
+      "tb" 'exunit-verify
+      "ta" 'exunit-verify-all
+      "tr" 'exunit-rerun
+      "tt" 'exunit-verify-single))
 
-      (define-key elixir-mode-map [f5] (lambda ()
-        (interactive)
-        (save-buffer)
-        (f-touch (shell-quote-argument (buffer-file-name)))
-        (alchemist-iex-compile-this-buffer-and-go)))
+  (defvar lsp-elixir--config-options (make-hash-table))
+  (puthash "fetchDeps" :json-false lsp-elixir--config-options)
 
-      (define-key elixir-mode-map [f6] (lambda ()
-        (interactive)
-        (save-buffer)
-        (alchemist-mix-rerun-last-test)))
+  (add-hook 'lsp-after-initialize-hook
+            (lambda ()
+              (message "running lsp-after-initialize-hook")
+              (if (eq major-mode 'latex-mode)
+                (lsp--set-configuration `(:elixirLS, lsp-elixir--config-options))
+                (elixir/init-flycheck-credo)
+                (flycheck-add-next-checker 'lsp
+                                            'elixir-credo))))
 
-      (define-key elixir-mode-map [f7] (lambda ()
-        (interactive)
-        (save-buffer)
-        (mix-dialyzer)))
-   ))
+  ;; web-mode (EEX)
+
+  (add-hook 'web-mode-hook
+            (lambda ()
+              (my-personal-code-style)))
 
   (add-hook 'python-mode-hook
     (lambda ()
@@ -421,14 +456,12 @@ layers configuration."
       (define-key python-mode-map [f6] (lambda ()
         (interactive)
         (save-buffer)
-        (shell-command "bin/run")))
-  ))
+        (shell-command "bin/run")))))
 
   (add-hook 'markdown-mode-hook
     (lambda ()
       (message "running markdown mode hook")
-      (visual-line-mode)
-      ))
+      (visual-line-mode)))
 
   ;;Scala
   (if (file-readable-p "./scalastyle-config.xml")
@@ -439,43 +472,24 @@ layers configuration."
 
   ;;javascript
 
-  (eval-after-load 'vue-mode
-    '(add-hook 'vue-mode-hook (lambda () (add-hook 'after-save-hook 'eslint-fix nil t))))
-
-  (eval-after-load 'js2-mode
-    '(add-hook 'js2-mode-hook (lambda () (add-hook 'after-save-hook 'eslint-fix nil t))))
-
-  (eval-after-load 'rjsx-mode
-    '(add-hook 'rjsx-mode-hook (lambda () (add-hook 'after-save-hook 'eslint-fix nil t))))
-
   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
   (add-to-list 'auto-mode-alist '("\\.vue\\'" . vue-mode))
 
   (add-hook 'vue-mode-hook
             (lambda ()
               (message "running vue hook")
+              (add-hook 'after-save-hook 'eslint-fix nil t)
               (flycheck-add-mode 'javascript-eslint 'vue-html-mode)
               (electric-indent-local-mode)
               (dtrt-indent-mode)
-              (flycheck-mode)
-              ))
+              (flycheck-mode)))
 
-  ;; somehow this is breaking rjsx mode
-  ;; (my-personal-code-style)
-  ;; (add-hook 'css-mode-hook 'my-personal-code-style)
-  ;; (add-hook 'js2-mode-hook 'my-personal-code-style)
-  ;; (add-hook 'react-mode-hook 'my-personal-code-style)
-  ;; (add-hook 'sh-mode-hook 'my-personal-code-style)
+  (add-hook 'js2-mode-hook
+             (lambda ()
+               (add-hook 'after-save-hook 'eslint-fix nil t)
+               (my-personal-code-style)))
 
-  (defun copy-file-name-to-clipboard ()
-    "Copy the current buffer file name to the clipboard."
-    (interactive)
-    (let ((filename (if (equal major-mode 'dired-mode)
-                        default-directory
-                      (buffer-file-name))))
-      (when filename
-        (kill-new filename)
-        (message "Copied buffer file name '%s' to the clipboard." filename))))
+  (add-hook 'vue-mode-hook 'my-personal-code-style)
 
   ;;Typescript
   (if (file-readable-p "node_modules/typescript/bin/tsserver")
@@ -504,6 +518,26 @@ layers configuration."
   (evil-leader/set-key-for-mode 'purescript-mode
     "a" 'my/append-char)
 
+  ;;Zig
+  (add-hook 'zig-mode-hook
+            (lambda ()
+              (message "running zig hook")
+              (define-key zig-mode-map [f5] (lambda ()
+                                                   (interactive)
+                                                   (save-buffer)
+                                                   (async-shell-command "zig build test")))
+              ))
+
+  ;; Utilities
+  (defun copy-file-name-to-clipboard ()
+    "Copy the current buffer file name to the clipboard."
+    (interactive)
+    (let ((filename (if (equal major-mode 'dired-mode)
+                        default-directory
+                      (buffer-file-name))))
+      (when filename
+        (kill-new filename)
+        (message "Copied buffer file name '%s' to the clipboard." filename))))
 
 ;;  (setq debug-on-error t)
 )

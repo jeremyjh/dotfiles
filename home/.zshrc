@@ -68,13 +68,15 @@ alias tmux="TERM=xterm-256color tmux"
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
 export EDITOR=/usr/bin/vim
+#EMACS_BIN=/Applications/Emacs.app/Contents/MacOS/Emacs
+EMACS_BIN=/Users/jeremy/repos/emacs/build-emacs-for-macos/builds/Emacs.app/Contents/MacOS/Emacs
 
 if [[ `uname` == 'Linux' ]]; then
   function docker() { sudo docker $@; }
   function docker-compose() { sudo docker-compose $@; }
   function emacs() { setsid emacs $@ > /dev/null }
 else
-  function emacs() { /usr/bin/nohup emacs $@ > /dev/null 2>&1 & }
+  function emacs() { /usr/bin/nohup $EMACS_BIN $@ > /dev/null 2>&1 & }
 fi
 
 setopt histignorespace
@@ -86,12 +88,11 @@ if type hub > /dev/null; then
   alias git=hub
 fi
 
-alias demo="HEROKU_APP=smart-erp-demo heroku $@"
 alias staging="HEROKU_APP=smart-erp-staging heroku $@"
 alias prod="HEROKU_APP=smart-erp-production heroku $@"
 alias cont="HEROKU_APP=smart-erp-contingency heroku $@"
-alias reporting="HEROKU_APP=smart-erp-reporting heroku $@"
 alias cons="HEROKU_APP=smart-erp-consolidated heroku $@"
+alias meta="HEROKU_APP=metabase-staging heroku $@"
 
 function stack-completions() {
   autoload -U +X compinit && compinit
@@ -100,6 +101,7 @@ function stack-completions() {
 }
 
 alias k=kubectl
+alias ls="gls --color=tty -loat"
 
 which stack &> /dev/null && stack-completions
 
@@ -110,3 +112,4 @@ fi
 if [ $commands[helm] ]; then
   source <(helm completion zsh)
 fi
+

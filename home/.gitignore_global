@@ -1,8 +1,9 @@
 # Text editor crud
 .redcar
 .redcar/*
-.idea
-.idea/*
+.idea/workspace.xml 
+.idea/tasks.xml
+.idea/markdown-navigator*
 .swp
 *.swp
 /tags
@@ -10,6 +11,10 @@ doc/tags
 doc/tags-ja
 .elixir_ls
 .vscode
+.tern-port
+.idea
+
+docs/
 
 # Rails generated files we don't version
 coverage.data
@@ -40,6 +45,7 @@ CMakeFiles/
 cmake_install.cmake
 CTestTestfile.cmake
 *.pc
+cmake-build-debug
 
 # Packages #
 ###########

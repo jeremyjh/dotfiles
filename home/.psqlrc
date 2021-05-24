@@ -1,1 +1,4 @@
 \x auto
+\set AUTOCOMMIT off
+\echo AUTOCOMMIT :AUTOCOMMIT
+\timing on
