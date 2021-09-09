@@ -68,8 +68,7 @@ alias tmux="TERM=xterm-256color tmux"
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
 export EDITOR=/usr/bin/vim
-#EMACS_BIN=/Applications/Emacs.app/Contents/MacOS/Emacs
-EMACS_BIN=/Users/jeremy/repos/emacs/build-emacs-for-macos/builds/Emacs.app/Contents/MacOS/Emacs
+EMACS_BIN=/Applications/Emacs.app/Contents/MacOS/Emacs
 
 if [[ `uname` == 'Linux' ]]; then
   function docker() { sudo docker $@; }
