@@ -430,7 +430,8 @@ layers configuration."
       "tb" 'exunit-verify
       "ta" 'exunit-verify-all
       "tr" 'exunit-rerun
-      "tt" 'exunit-verify-single))
+      "tt" 'exunit-verify-single
+      "tg" 'exunit-toggle-file-and-test))
 
   (defvar lsp-elixir--config-options (make-hash-table))
   (puthash "fetchDeps" :json-false lsp-elixir--config-options)
