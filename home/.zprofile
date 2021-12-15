@@ -119,3 +119,5 @@ fi
 if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
   . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 fi
+
+export FZF_DEFAULT_COMMAND='fd --type f'
