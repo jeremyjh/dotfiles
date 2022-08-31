@@ -69,6 +69,7 @@ alias tmux="TERM=xterm-256color tmux"
 
 export EDITOR=/usr/bin/vim
 EMACS_BIN=/Applications/Emacs.app/Contents/MacOS/Emacs
+export EMACS=$EMACS_BIN
 
 if [[ `uname` == 'Linux' ]]; then
   function docker() { sudo docker $@; }

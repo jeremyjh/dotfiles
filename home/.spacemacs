@@ -173,6 +173,10 @@ layers configuration."
   (spacemacs/toggle-indent-guide-globally-on)
 
 
+  ;; https://github.com/syl20bnr/spacemacs/issues/15089
+  (setq auto-mode-alist (delete '("/git-rebase-todo$" . helm-ls-git-rebase-todo-mode) auto-mode-alist))
+
+
   ;; use eyebrowse on emacs27
   (with-eval-after-load 'evil-maps
     (when (featurep 'tab-bar)
@@ -431,7 +435,8 @@ layers configuration."
       "ta" 'exunit-verify-all
       "tr" 'exunit-rerun
       "tt" 'exunit-verify-single
-      "tg" 'exunit-toggle-file-and-test))
+      "tg" 'exunit-toggle-file-and-test
+      "td" 'exunit-debug))
 
   (defvar lsp-elixir--config-options (make-hash-table))
   (puthash "fetchDeps" :json-false lsp-elixir--config-options)
