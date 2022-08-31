@@ -264,6 +264,7 @@ map <leader>lp :lprev<CR>
 :map <leader>gdc <C-h>:q<CR> 
 
 map <leader>fs :w<CR>
+map <leader>ft :NERDTreeToggle<CR>
 
 map <leader>ff :promptf<CR>
 map <leader>rr :promptr<CR>
@@ -272,7 +273,7 @@ map <leader>st :%!stylish-haskell<CR>
 
 map <leader>hl :!hlint %<CR>
 
-"set clipboard=unnamedplus - this breaks yank
+set clipboard=unnamed
 
 let g:rbpt_colorpairs = [
     \ ['brown',       'RoyalBlue3'],
@@ -299,6 +300,8 @@ au BufWritePost *.hsc silent !fast-tags %
 let g:necoghc_debug = 0
 
 au BufRead,BufNewFile *.rs setl filetype=rust shiftwidth=2 tabstop=2 softtabstop=2 expandtab
+au BufRead,BufNewFile *.exs setl filetype=elixir shiftwidth=2 tabstop=2 softtabstop=2 expandtab
+au BufRead,BufNewFile *.ex setl filetype=elixir shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 
 "todo - should be a snippet
 map <Leader>co :Copen<CR>
