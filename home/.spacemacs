@@ -11,7 +11,7 @@
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
-   '(go elm vue restclient terraform emacs-lisp lsp osx
+   '(go elm vue restclient terraform emacs-lisp osx
      syntax-checking sql python csv erlang html
      themes-megapack git scala dash clojure
      rust typescript elixir purescript yaml javascript aj-javascript

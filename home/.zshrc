@@ -113,3 +113,4 @@ if [ $commands[helm] ]; then
   source <(helm completion zsh)
 fi
 
+export PATH="/usr/local/opt/openjdk/bin:$PATH"
