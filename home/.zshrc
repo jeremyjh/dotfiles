@@ -75,7 +75,9 @@ if [[ `uname` == 'Linux' ]]; then
   function docker() { sudo docker $@; }
   function docker-compose() { sudo docker-compose $@; }
   function emacs() { setsid emacs $@ > /dev/null }
+  alias ls="ls --color=tty -loat"
 else
+  alias ls="gls --color=tty -loat"
   function emacs() { /usr/bin/nohup $EMACS_BIN $@ > /dev/null 2>&1 & }
 fi
 
@@ -101,7 +103,6 @@ function stack-completions() {
 }
 
 alias k=kubectl
-alias ls="gls --color=tty -loat"
 
 which stack &> /dev/null && stack-completions
 
