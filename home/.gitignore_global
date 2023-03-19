@@ -10,7 +10,6 @@
 doc/tags
 doc/tags-ja
 .elixir_ls
-.vscode
 .tern-port
 .idea
 

@@ -115,3 +115,4 @@ if [ $commands[helm] ]; then
 fi
 
 export PATH="/usr/local/opt/openjdk/bin:$PATH"
+alias git-origin-branches="git for-each-ref --sort=committerdate refs/remotes/origin/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'"
