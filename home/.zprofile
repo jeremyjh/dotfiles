@@ -107,7 +107,11 @@ export PATH="$HOME/.cargo/bin:$PATH"
 #. /home/jeremy/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
 export PATH="$HOME/.bin:$PATH"
-source $HOME/.asdf/asdf.sh
+
+
+if [ -f $HOME/.asdf/asdf.sh ]; then
+  source $HOME/.asdf/asdf.sh
+fi
 
 export ERL_AFLAGS="-kernel shell_history enabled"
 
