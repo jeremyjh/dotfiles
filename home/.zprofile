@@ -98,7 +98,6 @@ unset idfile is_local_client
 
 #man pages stay on screen on exit
 export LESS="-R"
-export POSTGRES_USER=jeremy
 
 source $HOME/.envlocal
 
