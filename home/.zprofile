@@ -129,3 +129,4 @@ if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
 fi
 
 export FZF_DEFAULT_COMMAND='fd --type f'
+source .homesick/repos/homeshick/homeshick.sh
