@@ -113,6 +113,10 @@ if [ -f $HOME/.asdf/asdf.sh ]; then
   source $HOME/.asdf/asdf.sh
 fi
 
+if [ -f /opt/local/share/asdf/asdf.sh ]; then
+  source /opt/local/share/asdf/asdf.sh
+fi
+
 export ERL_AFLAGS="-kernel shell_history enabled"
 
 if [ -f $HOME/.cargo/env ]; then
