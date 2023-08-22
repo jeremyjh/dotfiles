@@ -4,11 +4,8 @@
 [core]
 	autocrlf = input
 	excludesfile = ~/.gitignore_global
-  pager = /usr/local/share/git-core/contrib/diff-highlight/diff-highlight  | less -rx1,5 
 [rerere]
 	enabled = true
-[interactive]
-  diffFilter = /usr/local/share/git-core/contrib/diff-highlight/diff-highlight  | less -rx1,5 
 [color]
 	ui = true
 [color "diff-highlight"]
