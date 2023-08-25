@@ -1,3 +1,6 @@
 [submodule "home/.oh-my-zsh"]
 	path = home/.oh-my-zsh
 	url = https://github.com/robbyrussell/oh-my-zsh.git
+[submodule "intellimacs"]
+	path = intellimacs
+	url = https://github.com/MarcoIeni/intellimacs.git
