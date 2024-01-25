@@ -86,10 +86,6 @@ setopt histignorespace
 alias etck='sudo etckeeper'
 alias etcg='sudo etckeeper vcs'
 
-if type hub > /dev/null; then
-  alias git=hub
-fi
-
 alias staging="HEROKU_APP=smart-erp-staging heroku $@"
 alias prod="HEROKU_APP=smart-erp-production heroku $@"
 alias cont="HEROKU_APP=smart-erp-contingency heroku $@"

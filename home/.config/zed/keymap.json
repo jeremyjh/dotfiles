@@ -1,0 +1,26 @@
+[
+  {
+    // Insert mode
+    "context": "Editor && vim_mode == insert && !menu",
+    "bindings": {
+      "j k": ["vim::SwitchMode", "Normal"]
+    }
+  },
+  {
+    // Normal mode
+    "context": "Editor && vim_mode == normal && !VimWaiting && !menu",
+    "bindings": {
+      "space f s": "workspace::Save"
+    }
+  },
+  {
+    // Normal & Visual mode
+    "context": "Editor && VimControl && !VimWaiting && !menu",
+    "bindings": {}
+  },
+  {
+    // visual, visual line & visual block modes
+    "context": "Editor && vim_mode == visual && !VimWaiting && !menu",
+    "bindings": {}
+  }
+]
