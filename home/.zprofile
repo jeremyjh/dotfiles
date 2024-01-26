@@ -130,3 +130,6 @@ fi
 export FZF_DEFAULT_COMMAND='fd --type f'
 source ~/.homesick/repos/homeshick/homeshick.sh
 alias homesick=homeshick
+
+# always build asdf erlang with docs
+export KERL_BUILD_DOCS=yes
