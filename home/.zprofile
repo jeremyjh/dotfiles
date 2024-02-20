@@ -133,3 +133,6 @@ alias homesick=homeshick
 
 # always build asdf erlang with docs
 export KERL_BUILD_DOCS=yes
+
+# Added by OrbStack: command-line tools and integration
+source ~/.orbstack/shell/init.zsh 2>/dev/null || :
