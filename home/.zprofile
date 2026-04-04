@@ -107,11 +107,6 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 export PATH="$HOME/.bin:$PATH"
 
-
-if [ -f $HOME/.asdf/asdf.sh ]; then
-  source $HOME/.asdf/asdf.sh
-fi
-
 if [ -f /opt/local/share/asdf/asdf.sh ]; then
   source /opt/local/share/asdf/asdf.sh
 fi
@@ -136,3 +131,14 @@ export KERL_BUILD_DOCS=yes
 
 # Added by OrbStack: command-line tools and integration
 source ~/.orbstack/shell/init.zsh 2>/dev/null || :
+
+##
+# Your previous /Users/jeremy/.zprofile file was backed up as /Users/jeremy/.zprofile.macports-saved_2024-04-26_at_21:43:20
+##
+
+# MacPorts Installer addition on 2024-04-26_at_21:43:20: adding an appropriate MANPATH variable for use with MacPorts.
+export MANPATH="/opt/local/share/man:$MANPATH"
+# Finished adapting your MANPATH environment variable for use with MacPorts.
+
+export ASDF_DATA_DIR="/Users/jeremy/.asdf"
+export PATH="$ASDF_DATA_DIR/shims:$PATH"

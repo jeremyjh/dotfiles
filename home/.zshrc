@@ -67,7 +67,15 @@ alias tmux="TERM=xterm-256color tmux"
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
-export EDITOR=/usr/bin/vim
+if command -v nvim &>/dev/null; then
+  export EDITOR=nvim
+  export VISUAL=nvim
+  alias vim=nvim
+else
+  export EDITOR=vim
+  export VISUAL=vim
+fi
+
 EMACS_BIN=/Applications/Emacs.app/Contents/MacOS/Emacs
 export EMACS=$EMACS_BIN
 
@@ -87,6 +95,7 @@ alias etck='sudo etckeeper'
 alias etcg='sudo etckeeper vcs'
 
 alias staging="HEROKU_APP=smart-erp-staging heroku $@"
+alias uat="HEROKU_APP=smart-erp-uat heroku $@"
 alias prod="HEROKU_APP=smart-erp-production heroku $@"
 alias cont="HEROKU_APP=smart-erp-contingency heroku $@"
 alias cons="HEROKU_APP=smart-erp-consolidated heroku $@"
@@ -112,7 +121,15 @@ fi
 
 export PATH="/usr/local/opt/openjdk/bin:$PATH"
 export PATH="$HOME/.deno/bin:$PATH"
+alias wmill="ASDF_NODEJS_VERSION=25.8.0 exec asdf exec wmill $@"
 source <(wmill completions zsh)
+alias ngs='nvim -c "Neogit"'
 alias git-origin-branches="git for-each-ref --sort=committerdate refs/remotes/origin/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'"
 
 
+dump_table() {
+  PGSSLMODE=require pg_dump --no-owner --no-privileges --table=$1 $(meta config:get $2 | sed 's/\?.*//') > "$1.sql"
+}
+
+source /opt/local/share/fzf/shell/key-bindings.zsh
+source /opt/local/share/fzf/shell/completion.zsh

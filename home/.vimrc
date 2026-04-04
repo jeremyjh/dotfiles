@@ -50,7 +50,11 @@ syntax enable
 let g:slime_target="tmux"
 set number
 
-set pastetoggle=<F2>
+if !has('nvim')
+  set pastetoggle=<F2>
+  set guitablabel=%N:%M%t "number tabs 
+endif
+
 map <F5>  :w <Bar> :SlimuxShellLast<CR>
 map <F6>  :w <Bar> :make<CR>
 "map <F5>  :w <Bar> :Dispatch bin/runspec<CR>
@@ -246,7 +250,6 @@ au BufNewFile,BufRead *.hs map <buffer> <C-F4> :HoogleClose<CR>
 map <F3> :HsimportSymbol<CR>
 
 map <c-r><c-r> :promptr<CR>
-set guitablabel=%N:%M%t "number tabs 
 
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_auto_loc_list=1
