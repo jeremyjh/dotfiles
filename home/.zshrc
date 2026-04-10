@@ -34,6 +34,7 @@ ZSH_THEME="superjarin"
 plugins=(git git-flow gem vi-mode rvm bundler kube-ps1)
 
 source $ZSH/oh-my-zsh.sh
+eval "$(/Users/jeremy/.local/bin/mise activate zsh)"
 
 #solarized ls
 #eval `dircolors ~/.dircolors`
@@ -70,7 +71,7 @@ alias tmux="TERM=xterm-256color tmux"
 if command -v nvim &>/dev/null; then
   export EDITOR=nvim
   export VISUAL=nvim
-  alias vim=nvim
+  alias vim='NVIM_APPNAME=nvim-lite nvim'
 else
   export EDITOR=vim
   export VISUAL=vim
@@ -121,7 +122,6 @@ fi
 
 export PATH="/usr/local/opt/openjdk/bin:$PATH"
 export PATH="$HOME/.deno/bin:$PATH"
-alias wmill="ASDF_NODEJS_VERSION=25.8.0 exec asdf exec wmill $@"
 source <(wmill completions zsh)
 alias ngs='nvim -c "Neogit"'
 alias git-origin-branches="git for-each-ref --sort=committerdate refs/remotes/origin/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'"

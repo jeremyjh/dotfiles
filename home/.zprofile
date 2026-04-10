@@ -107,10 +107,6 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 export PATH="$HOME/.bin:$PATH"
 
-if [ -f /opt/local/share/asdf/asdf.sh ]; then
-  source /opt/local/share/asdf/asdf.sh
-fi
-
 export ERL_AFLAGS="-kernel shell_history enabled"
 
 if [ -f $HOME/.cargo/env ]; then
